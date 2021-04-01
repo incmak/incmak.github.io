@@ -164,6 +164,12 @@ a.btn.cyan:hover{
     top: 40vh;
     left: 85vh;
 }
+.hero-container .polygon4 {
+    position: absolute;
+    z-index: -1;
+    top: 25vh;
+    left: 120vh;
+}
 
 /* Header Animation */
 
@@ -244,7 +250,8 @@ a.btn.cyan:hover{
 
 .hero-container .polygon1,
 .hero-container .polygon2,
-.hero-container .polygon3 {
+.hero-container .polygon3,
+.hero-container .polygon4 {
     opacity: 0;
     animation-name: fadeIn, rotate;
     animation-duration: 800ms, 80s;
