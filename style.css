@@ -1,0 +1,264 @@
+/* colors */
+:root {
+    --wrapper-width: 100%;
+    --wrapper-padding: 60px;
+    --dark-color: #2b2d42;
+    --light-color: #fefefe;
+    --red-color: #d80032;
+    --cyan-color: #41ead4;
+    --poly-color: #CC9393;
+
+    --red-hover-color: #be0732;
+    --cyan-hover-color:#6af3e1;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Roboto", "sans-serif";
+}
+
+.wrapper {
+    width: var(--wrapper-width);
+    margin: 0 auto;
+    padding: 0 var(--wrapper-padding);
+}
+/* Header - Nav */
+
+.desktop-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-color);
+    box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+    padding: 2px 30px;
+    padding-right: 0;
+    height: 47px;
+    position: fixed;
+    z-index: 200;
+    width: calc(var(--wrapper-width) - var(--wrapper-padding)*2);
+    top: 28px;
+}
+
+.desktop-nav .menu-items {
+    display: flex;
+    list-style: none;
+}
+
+.desktop-nav .menu-items li {
+    margin: 0 20px;
+}
+
+.desktop-nav .menu-items li :nth-last-of-type(1) {
+    margin-right: 0;
+}
+
+.desktop-nav .menu-items li a{
+    text-decoration: none;
+    color: var(--dark-color);
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+}
+
+.desktop-nav .menu-items li a.active::after{
+    content: "";
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: var(--red-color);
+    left: 0;
+    bottom: -14px;
+}
+
+.desktop-nav .menu-items li a.btn{
+    color: var(--light-color);
+}
+
+a.btn {
+    background-color: var(--red-color);
+    color: var(--light-color);
+    border-radius: 24px;
+    padding: 14px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 400ms;
+}
+
+a.btn.cyan {
+    background: var(--cyan-color);
+    color: var(--dark-color);
+}
+
+a.btn:hover{
+    background: var(--red-hover-color);
+}
+a.btn.cyan:hover{
+    background: var(--cyan-hover-color);
+}
+/* hero header */
+
+.hero-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hero-container .left {
+    flex: 1;
+}
+
+.hero-container .left p {
+    font-size: 24px;
+}
+.hero-container .left h1{
+    font-size: 36px;
+    font-family: "Montserrat", "san-serif";
+    margin: 8px 0 28px 0;
+}
+
+.hero-container .left .makesite {
+    color: var(--red-color);
+}
+
+.hero-container .left .btn {
+    margin-right: 20px;
+}
+
+.hero-container .right {
+    padding-right: 30px;
+}
+
+/* Header and Polygons */
+
+.hero-bg {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    bottom: 0;
+    top: 200px;
+}
+
+.hero-container .polygon1 {
+    position: absolute;
+    z-index: -1;
+    top: 100px;
+    left: 340px;
+}
+
+.hero-container .polygon2 {
+    position: absolute;
+    z-index: -1;
+    top: 180px;
+    left: 540px;
+}
+
+.hero-container .polygon3 {
+    position: absolute;
+    z-index: -1;
+    top: 40vh;
+    left: 85vh;
+}
+
+/* Header Animation */
+
+.desktop-nav {
+    animation: fadeDown 1000ms forwards;
+    opacity: 0;
+}
+
+@keyframes fadeDown {
+    0%{
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+.hero-container .left p {
+    animation: fadeIn 800ms forwards;
+    opacity: 0;
+    animation-delay: 400ms;
+}
+
+@keyframes fadeIn{
+    to {
+        opacity: 1;
+    } 
+}
+
+.hero-container .left h1 {
+    animation: fadeToRight 800ms forwards cubic-bezier(0.22, 0.32, 0, 1.54);
+    opacity: 0;
+    animation-delay: 800ms;
+}
+
+@keyframes fadeToRight {
+    from {
+        opacity: 0;
+        transform:translateX(-100px)
+    }
+    to {
+        opacity: 1;
+        transform:translateX()
+    }
+}
+
+.hero-container .left .btn:nth-of-type(1) {
+    animation: fadeIn 1000ms forwards;
+    opacity: 0;
+    animation-delay: 1400ms;
+}
+
+.hero-container .left .btn:nth-of-type(2) {
+    animation: fadeIn 1000ms forwards;
+    opacity: 0;
+    animation-delay: 1600ms;
+}
+
+.hero-container .right {
+    animation: fadeToLeft 1200ms forwards;
+    opacity: 0;
+    animation-delay: 900ms;
+}
+
+@keyframes fadeToLeft {
+    from {
+        transform: translateX(30px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+.hero-container .polygon1,
+.hero-container .polygon2,
+.hero-container .polygon3 {
+    opacity: 0;
+    animation-name: fadeIn, rotate;
+    animation-duration: 800ms, 80s;
+    animation-delay: 1800ms;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in, linear;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
