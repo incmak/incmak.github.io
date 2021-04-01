@@ -136,12 +136,12 @@ a.btn.cyan:hover{
 /* Header and Polygons */
 
 .hero-bg {
-    position: fixed;
+    position: absolute;
     left: 0;
     width: 100%;
     z-index: -1;
     bottom: 0;
-    top: 200px;
+
 }
 
 .hero-container .polygon1 {
