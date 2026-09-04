@@ -1,67 +1,539 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working log</title>
+<meta name="description" content="A self-updating record of commits, focus time and new technology.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 2h9l3 3v9H2z' fill='%23cc7642'/%3E%3C/svg%3E">
+<style>:root {
+  --bg: #17100f;
+  --ink: #f2e8e3;
+  --dim: #b3a099;
+  --faint: #958077;
+  --cell-empty: #241b19;
+  --cell-hollow: #3a2c28;
+  --accent: #f0a05c;
+  --focus: #c9764a;
+  --ramp-0: #3d2620;
+  --ramp-1: #6b3a2a;
+  --ramp-2: #9c5334;
+  --ramp-3: #cc7642;
+  --ramp-4: #f0a05c;
+}
+:root { --hairline: rgba(242,232,227,.10); }
+@media (prefers-color-scheme: light) {
+:root {
+  --bg: #f6eeeb;
+  --ink: #241a16;
+  --dim: #665650;
+  --faint: #75625a;
+  --cell-empty: #e7dfda;
+  --cell-hollow: #cdbfb8;
+  --accent: #8f3f18;
+  --focus: #a1552d;
+  --ramp-0: #e6cdbd;
+  --ramp-1: #d4a184;
+  --ramp-2: #bc7854;
+  --ramp-3: #9d5330;
+  --ramp-4: #7a3517;
+}
+:root { --hairline: rgba(36,26,22,.12); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-synthesis-weight: none;
+}
+/* Grain sits on the substrate, never over the content. */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .045;
+}
+/* The field is the signature artifact, so the page aligns to IT rather than the
+   other way round: this inset equals the SVG's own left margin (60 of 840),
+   putting the masthead, headings and rows on the same axis as the stat columns. */
+.page {
+  position: relative; z-index: 1; max-width: 900px; margin: 0 auto;
+  padding: 72px 28px 96px; --inset: 7.143%;
+}
+.masthead, section, .colophon { padding-left: var(--inset); }
+
+.masthead { margin-bottom: 56px; }
+.masthead h1 {
+  margin: 0 0 10px; font-size: clamp(30px, 6vw, 46px); font-weight: 620;
+  letter-spacing: -.022em; line-height: 1.05;
+}
+.masthead p { margin: 0; max-width: 54ch; color: var(--dim); }
+
+/* The field is the signature artifact and leads the page. On a narrow screen it
+   scrolls rather than shrinking until the cells are unreadable. */
+.field-scroll { overflow-x: auto; margin: 0 -28px; padding: 0 28px; }
+.field-scroll svg { margin-left: 0; }
+.field-scroll svg { display: block; width: 100%; min-width: 700px; height: auto; }
+.field-scroll svg path[fill]:not([fill="none"]) { transition: opacity .12s ease; }
+.field-scroll svg:hover path[fill]:not([fill="none"]) { opacity: .55; }
+.field-scroll svg path:hover { opacity: 1 !important; }
+
+section { margin-top: 72px; }
+h2 {
+  margin: 0 0 5px; font-size: 16px; font-weight: 600; letter-spacing: -.006em;
+  color: var(--ink);
+}
+.lede { margin: 0 0 26px; color: var(--faint); font-size: 13px; }
+
+/* Records. Fixed columns so every row lines up regardless of content length. */
+.records { list-style: none; margin: 0; padding: 0; }
+.records li {
+  display: grid; grid-template-columns: 28px 1fr auto 104px;
+  align-items: baseline; gap: 16px; padding: 11px 0;
+  border-top: 1px solid var(--hairline);
+}
+.records li:first-child { border-top: 0; }
+.rank { font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--faint); }
+.when { color: var(--ink); }
+.hours {
+  font: 500 21px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .01em; color: var(--accent);
+}
+.hours i { font-style: normal; font-size: 12px; color: var(--dim); margin-left: 3px; }
+.commits { text-align: right; color: var(--dim); font-size: 13px; }
+
+/* Picked up: typographic list, not a wall of tinted chips. */
+.epoch { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 16px 0; border-top: 1px solid var(--hairline); }
+.epoch:first-child { border-top: 0; }
+.epoch h3 { margin: 0; font-size: 14px; font-weight: 500; color: var(--dim); }
+.picked { list-style: none; display: flex; flex-wrap: wrap; margin: 0; padding: 0; gap: 0 14px; }
+.picked li { position: relative; }
+.picked li + li::before {
+  content: "\00b7"; position: absolute; left: -9px; color: var(--faint);
+}
+
+/* Months. The bar carries the same cut corner as a field cell. */
+.months { list-style: none; margin: 0; padding: 0; }
+.months li {
+  display: grid; grid-template-columns: 130px 1fr 64px; align-items: center;
+  gap: 14px; padding: 9px 0;
+}
+.months .m { color: var(--dim); font-size: 13px; }
+.months .track { height: 12px; background: var(--cell-empty); }
+.months .track i {
+  display: block; height: 100%; background: var(--focus);
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
+}
+.months .n { font: 500 14px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; }
+.months .sub { grid-column: 2 / -1; font-size: 12px; color: var(--faint); margin-top: -4px; }
+
+.colophon { margin-top: 80px; color: var(--faint); font-size: 12.5px; line-height: 1.7; }
+.colophon a { color: var(--dim); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.colophon a:hover { color: var(--ink); }
+
+@media (max-width: 620px) {
+  .page { padding: 48px 20px 72px; --inset: 0; }
+  .records li { grid-template-columns: 22px 1fr auto; }
+  .records .commits { grid-column: 2 / -1; text-align: left; margin-top: -6px; }
+  .epoch { grid-template-columns: 1fr; gap: 6px; }
+  .months li { grid-template-columns: 104px 1fr 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
 </head>
 <body>
-    <div class="wrapper">
-        <nav class="desktop-nav">
-            <div class="logo">
-                <a href="#">
-                    <img src="images/logo.svg" alt="">
-                </a>
-            </div>
-            <ul class="menu-items">
-                <li>
-                    <a href="#" class="active">About</a>
-                </li>
-                <li>
-                    <a href="#">Our Projects</a>
-                </li>
-                <li>
-                    <a href="#">Testimonials</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-                <li>
-                    <a href="#" class="btn">Get Started</a>
-                </li>
-            </ul>
-        </nav>
+<div class="grain" aria-hidden="true"></div>
+<div class="page">
 
-        <!-- End of Desktop nav -->
+<header class="masthead">
+  <h1>Working log</h1>
+  <p>Commits, focus time, and the first time I touch a new technology.
+  Collected nightly, rebuilt from source, so a missed day repairs itself.</p>
+</header>
 
-        <header class="hero-container">
-            <div class="left">
-                <p> Welcome to </p>
-                <h1><span class="makesite">MAKeSite</span> webb</h1>
-                <a href="#" class="btn"> Get Started</a>
-                <a href="#" class="btn cyan"> Learn More</a>
-            </div>
-            <div class="right">
-                <img src="images/mobile-hum.svg" alt="" />
-            </div>
+<div class="field-scroll"><svg xmlns="http://www.w3.org/2000/svg" width="840" height="398" viewBox="0 0 840 398" role="img" aria-label="Commits per day over the last year, with recent focus time">
+<rect width="840" height="398" fill="transparent"/>
+<text x="60.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">1,291</text>
+<text x="60.0" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">commits in 2026</text>
+<text x="245.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">12<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
+<text x="245.5" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">current streak</text>
+<text x="431.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">20<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
+<text x="431.0" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">longest streak</text>
+<text x="616.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">126<tspan dx="4" font-size="15" fill="var(--dim)">h</tspan></text>
+<text x="616.5" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">tracked focus</text>
+<text x="60.0" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Dec</text>
+<text x="100.1" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Jan 2026</text>
+<text x="180.3" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Feb</text>
+<text x="260.5" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Mar</text>
+<text x="360.8" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Apr</text>
+<text x="441.0" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">May</text>
+<text x="521.2" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Jun</text>
+<text x="621.5" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Jul</text>
+<text x="701.7" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Aug</text>
+<text x="26" y="120.1" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="var(--dim)" dominant-baseline="central">Mon</text>
+<text x="26" y="160.2" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="var(--dim)" dominant-baseline="central">Wed</text>
+<text x="26" y="200.3" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" fill="var(--dim)" dominant-baseline="central">Fri</text>
+<path d="M60.00 112.00H72.02L76.24 116.22V128.24H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Mon 22 Dec 2025: no record</title></path>
+<path d="M60.00 132.05H72.02L76.24 136.28V148.30H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Tue 23 Dec 2025: no record</title></path>
+<path d="M60.00 152.11H72.02L76.24 156.33V168.35H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Wed 24 Dec 2025: no record</title></path>
+<path d="M60.00 172.16H72.02L76.24 176.39V188.41H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Thu 25 Dec 2025: no record</title></path>
+<path d="M60.00 192.22H72.02L76.24 196.44V208.46H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Fri 26 Dec 2025: no record</title></path>
+<path d="M60.00 212.27H72.02L76.24 216.49V228.51H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Sat 27 Dec 2025: no record</title></path>
+<path d="M60.00 232.32H72.02L76.24 236.55V248.57H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Sun 28 Dec 2025: no record</title></path>
+<path d="M80.05 112.00H92.07L96.30 116.22V128.24H80.05Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Mon 29 Dec 2025: no record</title></path>
+<path d="M80.05 132.05H92.07L96.30 136.28V148.30H80.05Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Tue 30 Dec 2025: no record</title></path>
+<path d="M80.05 152.11H92.07L96.30 156.33V168.35H80.05Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"><title>Wed 31 Dec 2025: no record</title></path>
+<path d="M80.05 172.16H92.07L96.30 176.39V188.41H80.05Z" fill="var(--ramp-0)"><title>Thu 1 Jan 2026: 6 commits</title></path>
+<path d="M80.05 192.22H92.07L96.30 196.44V208.46H80.05Z" fill="var(--ramp-0)"><title>Fri 2 Jan 2026: 8 commits</title></path>
+<path d="M80.05 212.27H92.07L96.30 216.49V228.51H80.05Z" fill="var(--ramp-0)"><title>Sat 3 Jan 2026: 1 commit</title></path>
+<path d="M80.05 232.32H92.07L96.30 236.55V248.57H80.05Z" fill="var(--ramp-0)"><title>Sun 4 Jan 2026: 5 commits</title></path>
+<path d="M100.11 112.00H112.13L116.35 116.22V128.24H100.11Z" fill="var(--ramp-0)"><title>Mon 5 Jan 2026: 1 commit</title></path>
+<path d="M100.11 132.05H112.13L116.35 136.28V148.30H100.11Z" fill="var(--ramp-0)"><title>Tue 6 Jan 2026: 5 commits</title></path>
+<path d="M100.11 152.11H112.13L116.35 156.33V168.35H100.11Z" fill="var(--ramp-0)"><title>Wed 7 Jan 2026: 5 commits</title></path>
+<path d="M100.11 172.16H112.13L116.35 176.39V188.41H100.11Z" fill="var(--ramp-0)"><title>Thu 8 Jan 2026: 2 commits</title></path>
+<path d="M100.11 192.22H112.13L116.35 196.44V208.46H100.11Z" fill="var(--ramp-1)"><title>Fri 9 Jan 2026: 9 commits</title></path>
+<path d="M100.11 212.27H112.13L116.35 216.49V228.51H100.11Z" fill="var(--ramp-0)"><title>Sat 10 Jan 2026: 6 commits</title></path>
+<path d="M100.11 232.32H112.13L116.35 236.55V248.57H100.11Z" fill="var(--ramp-1)"><title>Sun 11 Jan 2026: 10 commits</title></path>
+<path d="M120.16 112.00H132.18L136.41 116.22V128.24H120.16Z" fill="var(--ramp-0)"><title>Mon 12 Jan 2026: 7 commits</title></path>
+<path d="M120.16 132.05H132.18L136.41 136.28V148.30H120.16Z" fill="var(--ramp-1)"><title>Tue 13 Jan 2026: 10 commits</title></path>
+<path d="M120.16 152.11H132.18L136.41 156.33V168.35H120.16Z" fill="var(--ramp-0)"><title>Wed 14 Jan 2026: 3 commits</title></path>
+<path d="M120.16 172.16H132.18L136.41 176.39V188.41H120.16Z" fill="var(--ramp-1)"><title>Thu 15 Jan 2026: 11 commits</title></path>
+<path d="M120.16 192.22H132.18L136.41 196.44V208.46H120.16Z" fill="var(--ramp-0)"><title>Fri 16 Jan 2026: 3 commits</title></path>
+<path d="M120.16 212.27H132.18L136.41 216.49V228.51H120.16Z" fill="var(--ramp-0)"><title>Sat 17 Jan 2026: 4 commits</title></path>
+<path d="M120.16 232.32H132.18L136.41 236.55V248.57H120.16Z" fill="var(--ramp-0)"><title>Sun 18 Jan 2026: 1 commit</title></path>
+<path d="M140.22 112.00H152.24L156.46 116.22V128.24H140.22Z" fill="var(--ramp-0)"><title>Mon 19 Jan 2026: 4 commits</title></path>
+<path d="M140.22 132.05H152.24L156.46 136.28V148.30H140.22Z" fill="var(--ramp-0)"><title>Tue 20 Jan 2026: 1 commit</title></path>
+<path d="M140.22 152.11H152.24L156.46 156.33V168.35H140.22Z" fill="var(--cell-empty)"><title>Wed 21 Jan 2026: 0 commits</title></path>
+<path d="M140.22 172.16H152.24L156.46 176.39V188.41H140.22Z" fill="var(--cell-empty)"><title>Thu 22 Jan 2026: 0 commits</title></path>
+<path d="M140.22 192.22H152.24L156.46 196.44V208.46H140.22Z" fill="var(--cell-empty)"><title>Fri 23 Jan 2026: 0 commits</title></path>
+<path d="M140.22 212.27H152.24L156.46 216.49V228.51H140.22Z" fill="var(--cell-empty)"><title>Sat 24 Jan 2026: 0 commits</title></path>
+<path d="M140.22 232.32H152.24L156.46 236.55V248.57H140.22Z" fill="var(--cell-empty)"><title>Sun 25 Jan 2026: 0 commits</title></path>
+<path d="M160.27 112.00H172.29L176.51 116.22V128.24H160.27Z" fill="var(--cell-empty)"><title>Mon 26 Jan 2026: 0 commits</title></path>
+<path d="M160.27 132.05H172.29L176.51 136.28V148.30H160.27Z" fill="var(--cell-empty)"><title>Tue 27 Jan 2026: 0 commits</title></path>
+<path d="M160.27 152.11H172.29L176.51 156.33V168.35H160.27Z" fill="var(--cell-empty)"><title>Wed 28 Jan 2026: 0 commits</title></path>
+<path d="M160.27 172.16H172.29L176.51 176.39V188.41H160.27Z" fill="var(--cell-empty)"><title>Thu 29 Jan 2026: 0 commits</title></path>
+<path d="M160.27 192.22H172.29L176.51 196.44V208.46H160.27Z" fill="var(--cell-empty)"><title>Fri 30 Jan 2026: 0 commits</title></path>
+<path d="M160.27 212.27H172.29L176.51 216.49V228.51H160.27Z" fill="var(--cell-empty)"><title>Sat 31 Jan 2026: 0 commits</title></path>
+<path d="M160.27 232.32H172.29L176.51 236.55V248.57H160.27Z" fill="var(--cell-empty)"><title>Sun 1 Feb 2026: 0 commits</title></path>
+<path d="M180.32 112.00H192.34L196.57 116.22V128.24H180.32Z" fill="var(--cell-empty)"><title>Mon 2 Feb 2026: 0 commits</title></path>
+<path d="M180.32 132.05H192.34L196.57 136.28V148.30H180.32Z" fill="var(--cell-empty)"><title>Tue 3 Feb 2026: 0 commits</title></path>
+<path d="M180.32 152.11H192.34L196.57 156.33V168.35H180.32Z" fill="var(--cell-empty)"><title>Wed 4 Feb 2026: 0 commits</title></path>
+<path d="M180.32 172.16H192.34L196.57 176.39V188.41H180.32Z" fill="var(--cell-empty)"><title>Thu 5 Feb 2026: 0 commits</title></path>
+<path d="M180.32 192.22H192.34L196.57 196.44V208.46H180.32Z" fill="var(--cell-empty)"><title>Fri 6 Feb 2026: 0 commits</title></path>
+<path d="M180.32 212.27H192.34L196.57 216.49V228.51H180.32Z" fill="var(--cell-empty)"><title>Sat 7 Feb 2026: 0 commits</title></path>
+<path d="M180.32 232.32H192.34L196.57 236.55V248.57H180.32Z" fill="var(--cell-empty)"><title>Sun 8 Feb 2026: 0 commits</title></path>
+<path d="M200.38 112.00H212.40L216.62 116.22V128.24H200.38Z" fill="var(--cell-empty)"><title>Mon 9 Feb 2026: 0 commits</title></path>
+<path d="M200.38 132.05H212.40L216.62 136.28V148.30H200.38Z" fill="var(--cell-empty)"><title>Tue 10 Feb 2026: 0 commits</title></path>
+<path d="M200.38 152.11H212.40L216.62 156.33V168.35H200.38Z" fill="var(--ramp-0)"><title>Wed 11 Feb 2026: 1 commit</title></path>
+<path d="M200.38 172.16H212.40L216.62 176.39V188.41H200.38Z" fill="var(--cell-empty)"><title>Thu 12 Feb 2026: 0 commits</title></path>
+<path d="M200.38 192.22H212.40L216.62 196.44V208.46H200.38Z" fill="var(--cell-empty)"><title>Fri 13 Feb 2026: 0 commits</title></path>
+<path d="M200.38 212.27H212.40L216.62 216.49V228.51H200.38Z" fill="var(--cell-empty)"><title>Sat 14 Feb 2026: 0 commits</title></path>
+<path d="M200.38 232.32H212.40L216.62 236.55V248.57H200.38Z" fill="var(--cell-empty)"><title>Sun 15 Feb 2026: 0 commits</title></path>
+<path d="M220.43 112.00H232.45L236.68 116.22V128.24H220.43Z" fill="var(--cell-empty)"><title>Mon 16 Feb 2026: 0 commits</title></path>
+<path d="M220.43 132.05H232.45L236.68 136.28V148.30H220.43Z" fill="var(--cell-empty)"><title>Tue 17 Feb 2026: 0 commits</title></path>
+<path d="M220.43 152.11H232.45L236.68 156.33V168.35H220.43Z" fill="var(--cell-empty)"><title>Wed 18 Feb 2026: 0 commits</title></path>
+<path d="M220.43 172.16H232.45L236.68 176.39V188.41H220.43Z" fill="var(--ramp-0)"><title>Thu 19 Feb 2026: 7 commits</title></path>
+<path d="M220.43 192.22H232.45L236.68 196.44V208.46H220.43Z" fill="var(--ramp-0)"><title>Fri 20 Feb 2026: 3 commits</title></path>
+<path d="M220.43 212.27H232.45L236.68 216.49V228.51H220.43Z" fill="var(--ramp-1)"><title>Sat 21 Feb 2026: 11 commits</title></path>
+<path d="M220.43 232.32H232.45L236.68 236.55V248.57H220.43Z" fill="var(--ramp-1)"><title>Sun 22 Feb 2026: 11 commits</title></path>
+<path d="M240.49 112.00H252.51L256.73 116.22V128.24H240.49Z" fill="var(--ramp-0)"><title>Mon 23 Feb 2026: 4 commits</title></path>
+<path d="M240.49 132.05H252.51L256.73 136.28V148.30H240.49Z" fill="var(--ramp-0)"><title>Tue 24 Feb 2026: 7 commits</title></path>
+<path d="M240.49 152.11H252.51L256.73 156.33V168.35H240.49Z" fill="var(--ramp-0)"><title>Wed 25 Feb 2026: 1 commit</title></path>
+<path d="M240.49 172.16H252.51L256.73 176.39V188.41H240.49Z" fill="var(--ramp-0)"><title>Thu 26 Feb 2026: 1 commit</title></path>
+<path d="M240.49 192.22H252.51L256.73 196.44V208.46H240.49Z" fill="var(--ramp-0)"><title>Fri 27 Feb 2026: 2 commits</title></path>
+<path d="M240.49 212.27H252.51L256.73 216.49V228.51H240.49Z" fill="var(--cell-empty)"><title>Sat 28 Feb 2026: 0 commits</title></path>
+<path d="M240.49 232.32H252.51L256.73 236.55V248.57H240.49Z" fill="var(--cell-empty)"><title>Sun 1 Mar 2026: 0 commits</title></path>
+<path d="M260.54 112.00H272.56L276.78 116.22V128.24H260.54Z" fill="var(--cell-empty)"><title>Mon 2 Mar 2026: 0 commits</title></path>
+<path d="M260.54 132.05H272.56L276.78 136.28V148.30H260.54Z" fill="var(--ramp-1)"><title>Tue 3 Mar 2026: 16 commits</title></path>
+<path d="M260.54 152.11H272.56L276.78 156.33V168.35H260.54Z" fill="var(--ramp-0)"><title>Wed 4 Mar 2026: 4 commits</title></path>
+<path d="M260.54 172.16H272.56L276.78 176.39V188.41H260.54Z" fill="var(--ramp-0)"><title>Thu 5 Mar 2026: 4 commits</title></path>
+<path d="M260.54 192.22H272.56L276.78 196.44V208.46H260.54Z" fill="var(--cell-empty)"><title>Fri 6 Mar 2026: 0 commits</title></path>
+<path d="M260.54 212.27H272.56L276.78 216.49V228.51H260.54Z" fill="var(--ramp-0)"><title>Sat 7 Mar 2026: 2 commits</title></path>
+<path d="M260.54 232.32H272.56L276.78 236.55V248.57H260.54Z" fill="var(--ramp-0)"><title>Sun 8 Mar 2026: 7 commits</title></path>
+<path d="M280.59 112.00H292.61L296.84 116.22V128.24H280.59Z" fill="var(--cell-empty)"><title>Mon 9 Mar 2026: 0 commits</title></path>
+<path d="M280.59 132.05H292.61L296.84 136.28V148.30H280.59Z" fill="var(--ramp-0)"><title>Tue 10 Mar 2026: 6 commits</title></path>
+<path d="M280.59 152.11H292.61L296.84 156.33V168.35H280.59Z" fill="var(--cell-empty)"><title>Wed 11 Mar 2026: 0 commits</title></path>
+<path d="M280.59 172.16H292.61L296.84 176.39V188.41H280.59Z" fill="var(--cell-empty)"><title>Thu 12 Mar 2026: 0 commits</title></path>
+<path d="M280.59 192.22H292.61L296.84 196.44V208.46H280.59Z" fill="var(--cell-empty)"><title>Fri 13 Mar 2026: 0 commits</title></path>
+<path d="M280.59 212.27H292.61L296.84 216.49V228.51H280.59Z" fill="var(--ramp-0)"><title>Sat 14 Mar 2026: 4 commits</title></path>
+<path d="M280.59 232.32H292.61L296.84 236.55V248.57H280.59Z" fill="var(--cell-empty)"><title>Sun 15 Mar 2026: 0 commits</title></path>
+<path d="M300.65 112.00H312.67L316.89 116.22V128.24H300.65Z" fill="var(--ramp-0)"><title>Mon 16 Mar 2026: 2 commits</title></path>
+<path d="M300.65 132.05H312.67L316.89 136.28V148.30H300.65Z" fill="var(--ramp-0)"><title>Tue 17 Mar 2026: 1 commit</title></path>
+<path d="M300.65 152.11H312.67L316.89 156.33V168.35H300.65Z" fill="var(--cell-empty)"><title>Wed 18 Mar 2026: 0 commits</title></path>
+<path d="M300.65 172.16H312.67L316.89 176.39V188.41H300.65Z" fill="var(--cell-empty)"><title>Thu 19 Mar 2026: 0 commits</title></path>
+<path d="M300.65 192.22H312.67L316.89 196.44V208.46H300.65Z" fill="var(--ramp-0)"><title>Fri 20 Mar 2026: 1 commit</title></path>
+<path d="M300.65 212.27H312.67L316.89 216.49V228.51H300.65Z" fill="var(--cell-empty)"><title>Sat 21 Mar 2026: 0 commits</title></path>
+<path d="M300.65 232.32H312.67L316.89 236.55V248.57H300.65Z" fill="var(--cell-empty)"><title>Sun 22 Mar 2026: 0 commits</title></path>
+<path d="M320.70 112.00H332.72L336.95 116.22V128.24H320.70Z" fill="var(--cell-empty)"><title>Mon 23 Mar 2026: 0 commits</title></path>
+<path d="M320.70 132.05H332.72L336.95 136.28V148.30H320.70Z" fill="var(--ramp-0)"><title>Tue 24 Mar 2026: 3 commits</title></path>
+<path d="M320.70 152.11H332.72L336.95 156.33V168.35H320.70Z" fill="var(--cell-empty)"><title>Wed 25 Mar 2026: 0 commits</title></path>
+<path d="M320.70 172.16H332.72L336.95 176.39V188.41H320.70Z" fill="var(--cell-empty)"><title>Thu 26 Mar 2026: 0 commits</title></path>
+<path d="M320.70 192.22H332.72L336.95 196.44V208.46H320.70Z" fill="var(--ramp-0)"><title>Fri 27 Mar 2026: 2 commits</title></path>
+<path d="M320.70 212.27H332.72L336.95 216.49V228.51H320.70Z" fill="var(--cell-empty)"><title>Sat 28 Mar 2026: 0 commits</title></path>
+<path d="M320.70 232.32H332.72L336.95 236.55V248.57H320.70Z" fill="var(--ramp-0)"><title>Sun 29 Mar 2026: 2 commits</title></path>
+<path d="M340.76 112.00H352.78L357.00 116.22V128.24H340.76Z" fill="var(--cell-empty)"><title>Mon 30 Mar 2026: 0 commits</title></path>
+<path d="M340.76 132.05H352.78L357.00 136.28V148.30H340.76Z" fill="var(--cell-empty)"><title>Tue 31 Mar 2026: 0 commits</title></path>
+<path d="M340.76 152.11H352.78L357.00 156.33V168.35H340.76Z" fill="var(--cell-empty)"><title>Wed 1 Apr 2026: 0 commits</title></path>
+<path d="M340.76 172.16H352.78L357.00 176.39V188.41H340.76Z" fill="var(--ramp-0)"><title>Thu 2 Apr 2026: 1 commit</title></path>
+<path d="M340.76 192.22H352.78L357.00 196.44V208.46H340.76Z" fill="var(--cell-empty)"><title>Fri 3 Apr 2026: 0 commits</title></path>
+<path d="M340.76 212.27H352.78L357.00 216.49V228.51H340.76Z" fill="var(--cell-empty)"><title>Sat 4 Apr 2026: 0 commits</title></path>
+<path d="M340.76 232.32H352.78L357.00 236.55V248.57H340.76Z" fill="var(--cell-empty)"><title>Sun 5 Apr 2026: 0 commits</title></path>
+<path d="M360.81 112.00H372.83L377.05 116.22V128.24H360.81Z" fill="var(--cell-empty)"><title>Mon 6 Apr 2026: 0 commits</title></path>
+<path d="M360.81 132.05H372.83L377.05 136.28V148.30H360.81Z" fill="var(--ramp-0)"><title>Tue 7 Apr 2026: 6 commits</title></path>
+<path d="M360.81 152.11H372.83L377.05 156.33V168.35H360.81Z" fill="var(--ramp-0)"><title>Wed 8 Apr 2026: 1 commit</title></path>
+<path d="M360.81 172.16H372.83L377.05 176.39V188.41H360.81Z" fill="var(--ramp-0)"><title>Thu 9 Apr 2026: 2 commits</title></path>
+<path d="M360.81 192.22H372.83L377.05 196.44V208.46H360.81Z" fill="var(--cell-empty)"><title>Fri 10 Apr 2026: 0 commits</title></path>
+<path d="M360.81 212.27H372.83L377.05 216.49V228.51H360.81Z" fill="var(--cell-empty)"><title>Sat 11 Apr 2026: 0 commits</title></path>
+<path d="M360.81 232.32H372.83L377.05 236.55V248.57H360.81Z" fill="var(--cell-empty)"><title>Sun 12 Apr 2026: 0 commits</title></path>
+<path d="M380.86 112.00H392.89L397.11 116.22V128.24H380.86Z" fill="var(--cell-empty)"><title>Mon 13 Apr 2026: 0 commits</title></path>
+<path d="M380.86 132.05H392.89L397.11 136.28V148.30H380.86Z" fill="var(--cell-empty)"><title>Tue 14 Apr 2026: 0 commits</title></path>
+<path d="M380.86 152.11H392.89L397.11 156.33V168.35H380.86Z" fill="var(--cell-empty)"><title>Wed 15 Apr 2026: 0 commits</title></path>
+<path d="M380.86 172.16H392.89L397.11 176.39V188.41H380.86Z" fill="var(--cell-empty)"><title>Thu 16 Apr 2026: 0 commits</title></path>
+<path d="M380.86 192.22H392.89L397.11 196.44V208.46H380.86Z" fill="var(--ramp-0)"><title>Fri 17 Apr 2026: 2 commits</title></path>
+<path d="M380.86 212.27H392.89L397.11 216.49V228.51H380.86Z" fill="var(--ramp-1)"><title>Sat 18 Apr 2026: 14 commits</title></path>
+<path d="M380.86 232.32H392.89L397.11 236.55V248.57H380.86Z" fill="var(--cell-empty)"><title>Sun 19 Apr 2026: 0 commits</title></path>
+<path d="M400.92 112.00H412.94L417.16 116.22V128.24H400.92Z" fill="var(--ramp-1)"><title>Mon 20 Apr 2026: 16 commits</title></path>
+<path d="M400.92 132.05H412.94L417.16 136.28V148.30H400.92Z" fill="var(--ramp-2)"><title>Tue 21 Apr 2026: 56 commits</title></path>
+<path d="M400.92 152.11H412.94L417.16 156.33V168.35H400.92Z" fill="var(--ramp-1)"><title>Wed 22 Apr 2026: 19 commits</title></path>
+<path d="M400.92 172.16H412.94L417.16 176.39V188.41H400.92Z" fill="var(--cell-empty)"><title>Thu 23 Apr 2026: 0 commits</title></path>
+<path d="M400.92 192.22H412.94L417.16 196.44V208.46H400.92Z" fill="var(--cell-empty)"><title>Fri 24 Apr 2026: 0 commits</title></path>
+<path d="M400.92 212.27H412.94L417.16 216.49V228.51H400.92Z" fill="var(--cell-empty)"><title>Sat 25 Apr 2026: 0 commits</title></path>
+<path d="M400.92 232.32H412.94L417.16 236.55V248.57H400.92Z" fill="var(--ramp-0)"><title>Sun 26 Apr 2026: 1 commit</title></path>
+<path d="M420.97 112.00H432.99L437.22 116.22V128.24H420.97Z" fill="var(--cell-empty)"><title>Mon 27 Apr 2026: 0 commits</title></path>
+<path d="M420.97 132.05H432.99L437.22 136.28V148.30H420.97Z" fill="var(--ramp-0)"><title>Tue 28 Apr 2026: 1 commit</title></path>
+<path d="M420.97 152.11H432.99L437.22 156.33V168.35H420.97Z" fill="var(--ramp-0)"><title>Wed 29 Apr 2026: 1 commit</title></path>
+<path d="M420.97 172.16H432.99L437.22 176.39V188.41H420.97Z" fill="var(--cell-empty)"><title>Thu 30 Apr 2026: 0 commits</title></path>
+<path d="M420.97 192.22H432.99L437.22 196.44V208.46H420.97Z" fill="var(--cell-empty)"><title>Fri 1 May 2026: 0 commits</title></path>
+<path d="M420.97 212.27H432.99L437.22 216.49V228.51H420.97Z" fill="var(--ramp-0)"><title>Sat 2 May 2026: 1 commit</title></path>
+<path d="M420.97 232.32H432.99L437.22 236.55V248.57H420.97Z" fill="var(--cell-empty)"><title>Sun 3 May 2026: 0 commits</title></path>
+<path d="M441.03 112.00H453.05L457.27 116.22V128.24H441.03Z" fill="var(--cell-empty)"><title>Mon 4 May 2026: 0 commits</title></path>
+<path d="M441.03 132.05H453.05L457.27 136.28V148.30H441.03Z" fill="var(--cell-empty)"><title>Tue 5 May 2026: 0 commits</title></path>
+<path d="M441.03 152.11H453.05L457.27 156.33V168.35H441.03Z" fill="var(--cell-empty)"><title>Wed 6 May 2026: 0 commits</title></path>
+<path d="M441.03 172.16H453.05L457.27 176.39V188.41H441.03Z" fill="var(--cell-empty)"><title>Thu 7 May 2026: 0 commits</title></path>
+<path d="M441.03 192.22H453.05L457.27 196.44V208.46H441.03Z" fill="var(--cell-empty)"><title>Fri 8 May 2026: 0 commits</title></path>
+<path d="M441.03 212.27H453.05L457.27 216.49V228.51H441.03Z" fill="var(--cell-empty)"><title>Sat 9 May 2026: 0 commits</title></path>
+<path d="M441.03 232.32H453.05L457.27 236.55V248.57H441.03Z" fill="var(--cell-empty)"><title>Sun 10 May 2026: 0 commits</title></path>
+<path d="M461.08 112.00H473.10L477.32 116.22V128.24H461.08Z" fill="var(--cell-empty)"><title>Mon 11 May 2026: 0 commits</title></path>
+<path d="M461.08 132.05H473.10L477.32 136.28V148.30H461.08Z" fill="var(--cell-empty)"><title>Tue 12 May 2026: 0 commits</title></path>
+<path d="M461.08 152.11H473.10L477.32 156.33V168.35H461.08Z" fill="var(--cell-empty)"><title>Wed 13 May 2026: 0 commits</title></path>
+<path d="M461.08 172.16H473.10L477.32 176.39V188.41H461.08Z" fill="var(--cell-empty)"><title>Thu 14 May 2026: 0 commits</title></path>
+<path d="M461.08 192.22H473.10L477.32 196.44V208.46H461.08Z" fill="var(--cell-empty)"><title>Fri 15 May 2026: 0 commits</title></path>
+<path d="M461.08 212.27H473.10L477.32 216.49V228.51H461.08Z" fill="var(--ramp-0)"><title>Sat 16 May 2026: 1 commit</title></path>
+<path d="M461.08 232.32H473.10L477.32 236.55V248.57H461.08Z" fill="var(--cell-empty)"><title>Sun 17 May 2026: 0 commits</title></path>
+<path d="M481.14 112.00H493.16L497.38 116.22V128.24H481.14Z" fill="var(--ramp-0)"><title>Mon 18 May 2026: 2 commits</title></path>
+<path d="M481.14 132.05H493.16L497.38 136.28V148.30H481.14Z" fill="var(--ramp-0)"><title>Tue 19 May 2026: 1 commit</title></path>
+<path d="M481.14 152.11H493.16L497.38 156.33V168.35H481.14Z" fill="var(--cell-empty)"><title>Wed 20 May 2026: 0 commits</title></path>
+<path d="M481.14 172.16H493.16L497.38 176.39V188.41H481.14Z" fill="var(--ramp-0)"><title>Thu 21 May 2026: 5 commits</title></path>
+<path d="M481.14 192.22H493.16L497.38 196.44V208.46H481.14Z" fill="var(--ramp-0)"><title>Fri 22 May 2026: 2 commits</title></path>
+<path d="M481.14 212.27H493.16L497.38 216.49V228.51H481.14Z" fill="var(--cell-empty)"><title>Sat 23 May 2026: 0 commits</title></path>
+<path d="M481.14 232.32H493.16L497.38 236.55V248.57H481.14Z" fill="var(--cell-empty)"><title>Sun 24 May 2026: 0 commits</title></path>
+<path d="M501.19 112.00H513.21L517.43 116.22V128.24H501.19Z" fill="var(--ramp-0)"><title>Mon 25 May 2026: 3 commits</title></path>
+<path d="M501.19 132.05H513.21L517.43 136.28V148.30H501.19Z" fill="var(--cell-empty)"><title>Tue 26 May 2026: 0 commits</title></path>
+<path d="M501.19 152.11H513.21L517.43 156.33V168.35H501.19Z" fill="var(--cell-empty)"><title>Wed 27 May 2026: 0 commits</title></path>
+<path d="M501.19 172.16H513.21L517.43 176.39V188.41H501.19Z" fill="var(--cell-empty)"><title>Thu 28 May 2026: 0 commits</title></path>
+<path d="M501.19 192.22H513.21L517.43 196.44V208.46H501.19Z" fill="var(--cell-empty)"><title>Fri 29 May 2026: 0 commits</title></path>
+<path d="M501.19 212.27H513.21L517.43 216.49V228.51H501.19Z" fill="var(--cell-empty)"><title>Sat 30 May 2026: 0 commits</title></path>
+<path d="M501.19 232.32H513.21L517.43 236.55V248.57H501.19Z" fill="var(--cell-empty)"><title>Sun 31 May 2026: 0 commits</title></path>
+<path d="M521.24 112.00H533.26L537.49 116.22V128.24H521.24Z" fill="var(--cell-empty)"><title>Mon 1 Jun 2026: 0 commits</title></path>
+<path d="M521.24 132.05H533.26L537.49 136.28V148.30H521.24Z" fill="var(--cell-empty)"><title>Tue 2 Jun 2026: 0 commits</title></path>
+<path d="M521.24 152.11H533.26L537.49 156.33V168.35H521.24Z" fill="var(--cell-empty)"><title>Wed 3 Jun 2026: 0 commits</title></path>
+<path d="M521.24 172.16H533.26L537.49 176.39V188.41H521.24Z" fill="var(--cell-empty)"><title>Thu 4 Jun 2026: 0 commits</title></path>
+<path d="M521.24 192.22H533.26L537.49 196.44V208.46H521.24Z" fill="var(--ramp-0)"><title>Fri 5 Jun 2026: 1 commit</title></path>
+<path d="M521.24 212.27H533.26L537.49 216.49V228.51H521.24Z" fill="var(--cell-empty)"><title>Sat 6 Jun 2026: 0 commits</title></path>
+<path d="M521.24 232.32H533.26L537.49 236.55V248.57H521.24Z" fill="var(--cell-empty)"><title>Sun 7 Jun 2026: 0 commits</title></path>
+<path d="M541.30 112.00H553.32L557.54 116.22V128.24H541.30Z" fill="var(--cell-empty)"><title>Mon 8 Jun 2026: 0 commits</title></path>
+<path d="M541.30 132.05H553.32L557.54 136.28V148.30H541.30Z" fill="var(--cell-empty)"><title>Tue 9 Jun 2026: 0 commits</title></path>
+<path d="M541.30 152.11H553.32L557.54 156.33V168.35H541.30Z" fill="var(--cell-empty)"><title>Wed 10 Jun 2026: 0 commits</title></path>
+<path d="M541.30 172.16H553.32L557.54 176.39V188.41H541.30Z" fill="var(--cell-empty)"><title>Thu 11 Jun 2026: 0 commits</title></path>
+<path d="M541.30 192.22H553.32L557.54 196.44V208.46H541.30Z" fill="var(--cell-empty)"><title>Fri 12 Jun 2026: 0 commits</title></path>
+<path d="M541.30 212.27H553.32L557.54 216.49V228.51H541.30Z" fill="var(--cell-empty)"><title>Sat 13 Jun 2026: 0 commits</title></path>
+<path d="M541.30 232.32H553.32L557.54 236.55V248.57H541.30Z" fill="var(--ramp-0)"><title>Sun 14 Jun 2026: 1 commit</title></path>
+<path d="M561.35 112.00H573.37L577.60 116.22V128.24H561.35Z" fill="var(--cell-empty)"><title>Mon 15 Jun 2026: 0 commits</title></path>
+<path d="M561.35 132.05H573.37L577.60 136.28V148.30H561.35Z" fill="var(--cell-empty)"><title>Tue 16 Jun 2026: 0 commits</title></path>
+<path d="M561.35 152.11H573.37L577.60 156.33V168.35H561.35Z" fill="var(--cell-empty)"><title>Wed 17 Jun 2026: 0 commits</title></path>
+<path d="M561.35 172.16H573.37L577.60 176.39V188.41H561.35Z" fill="var(--cell-empty)"><title>Thu 18 Jun 2026: 0 commits</title></path>
+<path d="M561.35 192.22H573.37L577.60 196.44V208.46H561.35Z" fill="var(--cell-empty)"><title>Fri 19 Jun 2026: 0 commits</title></path>
+<path d="M561.35 212.27H573.37L577.60 216.49V228.51H561.35Z" fill="var(--cell-empty)"><title>Sat 20 Jun 2026: 0 commits</title></path>
+<path d="M561.35 232.32H573.37L577.60 236.55V248.57H561.35Z" fill="var(--cell-empty)"><title>Sun 21 Jun 2026: 0 commits</title></path>
+<path d="M581.41 112.00H593.43L597.65 116.22V128.24H581.41Z" fill="var(--cell-empty)"><title>Mon 22 Jun 2026: 0 commits</title></path>
+<path d="M581.41 132.05H593.43L597.65 136.28V148.30H581.41Z" fill="var(--cell-empty)"><title>Tue 23 Jun 2026: 0 commits</title></path>
+<path d="M581.41 152.11H593.43L597.65 156.33V168.35H581.41Z" fill="var(--cell-empty)"><title>Wed 24 Jun 2026: 0 commits</title></path>
+<path d="M581.41 172.16H593.43L597.65 176.39V188.41H581.41Z" fill="var(--cell-empty)"><title>Thu 25 Jun 2026: 0 commits</title></path>
+<path d="M581.41 192.22H593.43L597.65 196.44V208.46H581.41Z" fill="var(--cell-empty)"><title>Fri 26 Jun 2026: 0 commits</title></path>
+<path d="M581.41 212.27H593.43L597.65 216.49V228.51H581.41Z" fill="var(--cell-empty)"><title>Sat 27 Jun 2026: 0 commits</title></path>
+<path d="M581.41 232.32H593.43L597.65 236.55V248.57H581.41Z" fill="var(--cell-empty)"><title>Sun 28 Jun 2026: 0 commits</title></path>
+<path d="M601.46 112.00H613.48L617.70 116.22V128.24H601.46Z" fill="var(--cell-empty)"><title>Mon 29 Jun 2026: 0 commits</title></path>
+<path d="M601.46 132.05H613.48L617.70 136.28V148.30H601.46Z" fill="var(--cell-empty)"><title>Tue 30 Jun 2026: 0 commits</title></path>
+<path d="M601.46 152.11H613.48L617.70 156.33V168.35H601.46Z" fill="var(--cell-empty)"><title>Wed 1 Jul 2026: 0 commits</title></path>
+<path d="M601.46 172.16H613.48L617.70 176.39V188.41H601.46Z" fill="var(--cell-empty)"><title>Thu 2 Jul 2026: 0 commits</title></path>
+<path d="M601.46 192.22H613.48L617.70 196.44V208.46H601.46Z" fill="var(--ramp-0)"><title>Fri 3 Jul 2026: 1 commit</title></path>
+<path d="M601.46 212.27H613.48L617.70 216.49V228.51H601.46Z" fill="var(--ramp-0)"><title>Sat 4 Jul 2026: 2 commits</title></path>
+<path d="M601.46 232.32H613.48L617.70 236.55V248.57H601.46Z" fill="var(--ramp-0)"><title>Sun 5 Jul 2026: 2 commits</title></path>
+<path d="M621.51 112.00H633.53L637.76 116.22V128.24H621.51Z" fill="var(--cell-empty)"><title>Mon 6 Jul 2026: 0 commits</title></path>
+<path d="M621.51 132.05H633.53L637.76 136.28V148.30H621.51Z" fill="var(--cell-empty)"><title>Tue 7 Jul 2026: 0 commits</title></path>
+<path d="M621.51 152.11H633.53L637.76 156.33V168.35H621.51Z" fill="var(--cell-empty)"><title>Wed 8 Jul 2026: 0 commits</title></path>
+<path d="M621.51 172.16H633.53L637.76 176.39V188.41H621.51Z" fill="var(--ramp-0)"><title>Thu 9 Jul 2026: 1 commit</title></path>
+<path d="M621.51 192.22H633.53L637.76 196.44V208.46H621.51Z" fill="var(--ramp-0)"><title>Fri 10 Jul 2026: 1 commit</title></path>
+<path d="M621.51 212.27H633.53L637.76 216.49V228.51H621.51Z" fill="var(--cell-empty)"><title>Sat 11 Jul 2026: 0 commits</title></path>
+<path d="M621.51 232.32H633.53L637.76 236.55V248.57H621.51Z" fill="var(--ramp-0)"><title>Sun 12 Jul 2026: 1 commit</title></path>
+<path d="M641.57 112.00H653.59L657.81 116.22V128.24H641.57Z" fill="var(--cell-empty)"><title>Mon 13 Jul 2026: 0 commits</title></path>
+<path d="M641.57 132.05H653.59L657.81 136.28V148.30H641.57Z" fill="var(--cell-empty)"><title>Tue 14 Jul 2026: 0 commits</title></path>
+<path d="M641.57 152.11H653.59L657.81 156.33V168.35H641.57Z" fill="var(--cell-empty)"><title>Wed 15 Jul 2026: 0 commits</title></path>
+<path d="M641.57 172.16H653.59L657.81 176.39V188.41H641.57Z" fill="var(--cell-empty)"><title>Thu 16 Jul 2026: 0 commits</title></path>
+<path d="M641.57 192.22H653.59L657.81 196.44V208.46H641.57Z" fill="var(--ramp-0)"><title>Fri 17 Jul 2026: 2 commits</title></path>
+<path d="M641.57 212.27H653.59L657.81 216.49V228.51H641.57Z" fill="var(--ramp-0)"><title>Sat 18 Jul 2026: 2 commits</title></path>
+<path d="M641.57 232.32H653.59L657.81 236.55V248.57H641.57Z" fill="var(--cell-empty)"><title>Sun 19 Jul 2026: 0 commits</title></path>
+<path d="M661.62 112.00H673.64L677.87 116.22V128.24H661.62Z" fill="var(--cell-empty)"><title>Mon 20 Jul 2026: 0 commits</title></path>
+<path d="M661.62 132.05H673.64L677.87 136.28V148.30H661.62Z" fill="var(--cell-empty)"><title>Tue 21 Jul 2026: 0 commits</title></path>
+<path d="M661.62 152.11H673.64L677.87 156.33V168.35H661.62Z" fill="var(--cell-empty)"><title>Wed 22 Jul 2026: 0 commits</title></path>
+<path d="M661.62 172.16H673.64L677.87 176.39V188.41H661.62Z" fill="var(--cell-empty)"><title>Thu 23 Jul 2026: 0 commits</title></path>
+<path d="M661.62 192.22H673.64L677.87 196.44V208.46H661.62Z" fill="var(--cell-empty)"><title>Fri 24 Jul 2026: 0 commits</title></path>
+<path d="M661.62 212.27H673.64L677.87 216.49V228.51H661.62Z" fill="var(--ramp-0)"><title>Sat 25 Jul 2026: 2 commits</title></path>
+<path d="M661.62 232.32H673.64L677.87 236.55V248.57H661.62Z" fill="var(--cell-empty)"><title>Sun 26 Jul 2026: 0 commits</title></path>
+<path d="M681.68 112.00H693.70L697.92 116.22V128.24H681.68Z" fill="var(--cell-empty)"><title>Mon 27 Jul 2026: 0 commits</title></path>
+<path d="M681.68 132.05H693.70L697.92 136.28V148.30H681.68Z" fill="var(--cell-empty)"><title>Tue 28 Jul 2026: 0 commits</title></path>
+<path d="M681.68 152.11H693.70L697.92 156.33V168.35H681.68Z" fill="var(--cell-empty)"><title>Wed 29 Jul 2026: 0 commits</title></path>
+<path d="M681.68 172.16H693.70L697.92 176.39V188.41H681.68Z" fill="var(--ramp-0)"><title>Thu 30 Jul 2026: 1 commit</title></path>
+<path d="M681.68 192.22H693.70L697.92 196.44V208.46H681.68Z" fill="var(--cell-empty)"><title>Fri 31 Jul 2026: 0 commits</title></path>
+<path d="M681.68 212.27H693.70L697.92 216.49V228.51H681.68Z" fill="var(--cell-empty)"><title>Sat 1 Aug 2026: 0 commits</title></path>
+<path d="M681.68 232.32H693.70L697.92 236.55V248.57H681.68Z" fill="var(--cell-empty)"><title>Sun 2 Aug 2026: 0 commits</title></path>
+<path d="M701.73 112.00H713.75L717.97 116.22V128.24H701.73Z" fill="var(--cell-empty)"><title>Mon 3 Aug 2026: 0 commits</title></path>
+<path d="M701.73 132.05H713.75L717.97 136.28V148.30H701.73Z" fill="var(--cell-empty)"><title>Tue 4 Aug 2026: 0 commits</title></path>
+<path d="M701.73 152.11H713.75L717.97 156.33V168.35H701.73Z" fill="var(--ramp-0)"><title>Wed 5 Aug 2026: 1 commit</title></path>
+<path d="M701.73 172.16H713.75L717.97 176.39V188.41H701.73Z" fill="var(--cell-empty)"><title>Thu 6 Aug 2026: 0 commits</title></path>
+<path d="M701.73 192.22H713.75L717.97 196.44V208.46H701.73Z" fill="var(--cell-empty)"><title>Fri 7 Aug 2026: 0 commits</title></path>
+<path d="M701.73 212.27H713.75L717.97 216.49V228.51H701.73Z" fill="var(--ramp-1)"><title>Sat 8 Aug 2026: 15 commits</title></path>
+<path d="M701.73 232.32H713.75L717.97 236.55V248.57H701.73Z" fill="var(--ramp-1)"><title>Sun 9 Aug 2026: 18 commits</title></path>
+<path d="M721.78 112.00H733.80L738.03 116.22V128.24H721.78Z" fill="var(--ramp-0)"><title>Mon 10 Aug 2026: 1 commit</title></path>
+<path d="M721.78 132.05H733.80L738.03 136.28V148.30H721.78Z" fill="var(--ramp-2)"><title>Tue 11 Aug 2026: 45 commits</title></path>
+<path d="M721.78 152.11H733.80L738.03 156.33V168.35H721.78Z" fill="var(--ramp-2)"><title>Wed 12 Aug 2026: 41 commits</title></path>
+<path d="M721.78 172.16H733.80L738.03 176.39V188.41H721.78Z" fill="var(--ramp-3)"><title>Thu 13 Aug 2026: 74 commits</title></path>
+<path d="M721.78 192.22H733.80L738.03 196.44V208.46H721.78Z" fill="var(--ramp-0)"><title>Fri 14 Aug 2026: 7 commits</title></path>
+<path d="M721.78 212.27H733.80L738.03 216.49V228.51H721.78Z" fill="var(--ramp-0)"><title>Sat 15 Aug 2026: 2 commits</title></path>
+<path d="M721.78 232.32H733.80L738.03 236.55V248.57H721.78Z" fill="var(--ramp-0)"><title>Sun 16 Aug 2026: 2 commits</title></path>
+<path d="M741.84 112.00H753.86L758.08 116.22V128.24H741.84Z" fill="var(--ramp-0)"><title>Mon 17 Aug 2026: 4 commits</title></path>
+<path d="M741.84 132.05H753.86L758.08 136.28V148.30H741.84Z" fill="var(--ramp-3)"><title>Tue 18 Aug 2026: 77 commits</title></path>
+<path d="M741.84 152.11H753.86L758.08 156.33V168.35H741.84Z" fill="var(--ramp-2)"><title>Wed 19 Aug 2026: 48 commits</title></path>
+<path d="M741.84 172.16H753.86L758.08 176.39V188.41H741.84Z" fill="var(--ramp-1)"><title>Thu 20 Aug 2026: 13 commits</title></path>
+<path d="M741.84 192.22H753.86L758.08 196.44V208.46H741.84Z" fill="var(--ramp-2)"><title>Fri 21 Aug 2026: 28 commits</title></path>
+<path d="M741.84 212.27H753.86L758.08 216.49V228.51H741.84Z" fill="var(--ramp-1)"><title>Sat 22 Aug 2026: 15 commits, 4.0h tracked</title></path>
+<path d="M741.84 232.32H753.86L758.08 236.55V248.57H741.84Z" fill="var(--cell-empty)"><title>Sun 23 Aug 2026: 0 commits, 0.0h tracked</title></path>
+<path d="M761.89 112.00H773.91L778.14 116.22V128.24H761.89Z" fill="var(--ramp-0)"><title>Mon 24 Aug 2026: 4 commits, 0.8h tracked</title></path>
+<path d="M761.89 132.05H773.91L778.14 136.28V148.30H761.89Z" fill="var(--ramp-0)"><title>Tue 25 Aug 2026: 2 commits, 1.8h tracked</title></path>
+<path d="M761.89 152.11H773.91L778.14 156.33V168.35H761.89Z" fill="var(--ramp-2)"><title>Wed 26 Aug 2026: 26 commits, 4.9h tracked</title></path>
+<path d="M761.89 172.16H773.91L778.14 176.39V188.41H761.89Z" fill="var(--ramp-2)"><title>Thu 27 Aug 2026: 55 commits, 19.1h tracked</title></path>
+<path d="M761.89 192.22H773.91L778.14 196.44V208.46H761.89Z" fill="var(--ramp-2)"><title>Fri 28 Aug 2026: 41 commits, 13.4h tracked</title></path>
+<path d="M761.89 212.27H773.91L778.14 216.49V228.51H761.89Z" fill="var(--ramp-4)"><title>Sat 29 Aug 2026: 206 commits, 15.6h tracked</title></path>
+<path d="M761.89 232.32H773.91L778.14 236.55V248.57H761.89Z" fill="var(--ramp-3)"><title>Sun 30 Aug 2026: 85 commits, 14.3h tracked</title></path>
+<path d="M781.95 112.00H793.97L798.19 116.22V128.24H781.95Z" fill="var(--ramp-2)"><title>Mon 31 Aug 2026: 58 commits, 15.3h tracked</title></path>
+<path d="M781.95 132.05H793.97L798.19 136.28V148.30H781.95Z" fill="var(--ramp-2)"><title>Tue 1 Sep 2026: 50 commits, 11.2h tracked</title></path>
+<path d="M781.95 152.11H793.97L798.19 156.33V168.35H781.95Z" fill="var(--ramp-0)"><title>Wed 2 Sep 2026: 6 commits, 10.6h tracked</title></path>
+<path d="M781.95 172.16H793.97L798.19 176.39V188.41H781.95Z" fill="var(--ramp-0)"><title>Thu 3 Sep 2026: 8 commits, 12.6h tracked</title></path>
+<path d="M781.95 192.22H793.97L798.19 196.44V208.46H781.95Z" fill="var(--ramp-0)"><title>Fri 4 Sep 2026: 3 commits, 2.4h tracked</title></path>
+<path d="M781.95 192.22H793.97L798.19 196.44V208.46H781.95Z" fill="none" stroke="var(--accent)" stroke-width="1.5" pointer-events="none"/>
+<text x="60" y="284.37837837837833" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">focus time, daily</text>
+<text x="802" y="284.37837837837833" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" text-anchor="end">126.0h across 14 of 30 days</text>
+<path d="M60.00 341.38H76.80L78.80 343.38V346.38H60.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M84.73 341.38H101.53L103.53 343.38V346.38H84.73Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M109.47 341.38H126.26L128.26 343.38V346.38H109.47Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M134.20 341.38H151.00L153.00 343.38V346.38H134.20Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M158.93 341.38H175.73L177.73 343.38V346.38H158.93Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M183.67 341.38H200.46L202.46 343.38V346.38H183.67Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M208.40 341.38H225.20L227.20 343.38V346.38H208.40Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M233.13 341.38H249.93L251.93 343.38V346.38H233.13Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M257.87 341.38H274.66L276.66 343.38V346.38H257.87Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M282.60 341.38H299.40L301.40 343.38V346.38H282.60Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M307.33 341.38H324.13L326.13 343.38V346.38H307.33Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M332.07 341.38H348.86L350.86 343.38V346.38H332.07Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M356.80 341.38H373.60L375.60 343.38V346.38H356.80Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M381.53 341.38H398.33L400.33 343.38V346.38H381.53Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M406.27 341.38H423.06L425.06 343.38V346.38H406.27Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M431.00 341.38H447.80L449.80 343.38V346.38H431.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<path d="M455.73 339.30H471.53L474.53 342.30V346.38H455.73Z" fill="var(--focus)"/>
+<path d="M480.47 343.88H496.76L499.26 346.38V346.38H480.47Z" fill="var(--focus)"/>
+<path d="M505.20 343.88H521.50L524.00 346.38V346.38H505.20Z" fill="var(--focus)"/>
+<path d="M529.93 343.12H545.73L548.73 346.12V346.38H529.93Z" fill="var(--focus)"/>
+<path d="M554.67 337.68H570.46L573.46 340.68V346.38H554.67Z" fill="var(--focus)"/>
+<path d="M579.40 312.38H595.20L598.20 315.38V346.38H579.40Z" fill="var(--accent)"/>
+<text x="588.8" y="305.4" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="11" fill="var(--ink)" text-anchor="middle">19.1h</text>
+<path d="M604.13 322.40H619.93L622.93 325.40V346.38H604.13Z" fill="var(--focus)"/>
+<path d="M628.87 318.52H644.66L647.66 321.52V346.38H628.87Z" fill="var(--focus)"/>
+<path d="M653.60 320.86H669.40L672.40 323.86V346.38H653.60Z" fill="var(--focus)"/>
+<path d="M678.33 319.05H694.13L697.13 322.05V346.38H678.33Z" fill="var(--focus)"/>
+<path d="M703.07 326.44H718.86L721.86 329.44V346.38H703.07Z" fill="var(--focus)"/>
+<path d="M727.80 327.46H743.60L746.60 330.46V346.38H727.80Z" fill="var(--focus)"/>
+<path d="M752.53 323.86H768.33L771.33 326.86V346.38H752.53Z" fill="var(--focus)"/>
+<path d="M777.27 342.17H793.06L796.06 345.17V346.38H777.27Z" fill="var(--focus)"/>
+<text x="60" y="374.37837837837833" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" dominant-baseline="central">quieter</text>
+<path d="M112.00 368.88H120.00L123.00 371.88V379.88H112.00Z" fill="var(--ramp-0)"/>
+<path d="M127.00 368.88H135.00L138.00 371.88V379.88H127.00Z" fill="var(--ramp-1)"/>
+<path d="M142.00 368.88H150.00L153.00 371.88V379.88H142.00Z" fill="var(--ramp-2)"/>
+<path d="M157.00 368.88H165.00L168.00 371.88V379.88H157.00Z" fill="var(--ramp-3)"/>
+<path d="M172.00 368.88H180.00L183.00 371.88V379.88H172.00Z" fill="var(--ramp-4)"/>
+<text x="192" y="374.37837837837833" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" dominant-baseline="central">busier</text>
+<path d="M252.00 368.88H260.00L263.00 371.88V379.88H252.00Z" fill="none" stroke="var(--cell-hollow)" stroke-width="1"/>
+<text x="271" y="374.37837837837833" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" dominant-baseline="central">no reading recorded</text>
+</svg></div>
 
-            <img class="hero-bg" src="images/headerbg.svg" alt="" />
+<section>
+  <h2>Best days on record</h2>
+  <p class="lede">Ranked by tracked focus time. Kept permanently, so these
+  survive WakaTime ageing the raw readings out of its window.</p>
+  <ol class="records"><li><span class="rank">1</span><span class="when">Thu 27 Aug 2026</span><span class="hours">19.1<i>h</i></span><span class="commits">55 commits</span></li>
+<li><span class="rank">2</span><span class="when">Sat 29 Aug 2026</span><span class="hours">15.6<i>h</i></span><span class="commits">206 commits</span></li>
+<li><span class="rank">3</span><span class="when">Mon 31 Aug 2026</span><span class="hours">15.3<i>h</i></span><span class="commits">58 commits</span></li>
+<li><span class="rank">4</span><span class="when">Sun 30 Aug 2026</span><span class="hours">14.3<i>h</i></span><span class="commits">85 commits</span></li>
+<li><span class="rank">5</span><span class="when">Fri 28 Aug 2026</span><span class="hours">13.4<i>h</i></span><span class="commits">41 commits</span></li>
+<li><span class="rank">6</span><span class="when">Thu 3 Sep 2026</span><span class="hours">12.6<i>h</i></span><span class="commits">8 commits</span></li>
+<li><span class="rank">7</span><span class="when">Tue 1 Sep 2026</span><span class="hours">11.2<i>h</i></span><span class="commits">50 commits</span></li></ol>
+</section>
 
-            <div class="polygon-container">
-                <img class="polygon1" src="images/Polygon 1.svg" alt="" />
-                <img class="polygon2" src="images/Polygon 2.svg" alt="" />
-                <img class="polygon3" src="images/Polygon 3.svg" alt="" />
-                <img class="polygon4" src="images/Polygon 4.svg" alt="" />
-            </div>
-        </header>
+<section>
+  <h2>What I picked up</h2>
+  <p class="lede">First contact with a language, framework or tool, dated to the
+  commit that introduced it. January is heavy because it is where the record
+  starts: everything already in use then lands on that first month.</p>
+  <div class="epoch"><h3>September 2026</h3><ul class="picked"><li>pandas</li></ul></div>
+<div class="epoch"><h3>August 2026</h3><ul class="picked"><li>Firebase</li><li>Jest</li><li>Swift Package Manager</li><li>Vue</li><li>pre-commit</li></ul></div>
+<div class="epoch"><h3>May 2026</h3><ul class="picked"><li>GLSL</li><li>React Three Fiber</li><li>Three.js</li></ul></div>
+<div class="epoch"><h3>April 2026</h3><ul class="picked"><li>Java</li><li>Kotlin</li><li>Playwright</li><li>Redis</li><li>Room</li><li>Ruby</li><li>Swift</li><li>esbuild</li></ul></div>
+<div class="epoch"><h3>March 2026</h3><ul class="picked"><li>Fastify</li><li>SQLAlchemy</li><li>Stripe</li><li>Turborepo</li></ul></div>
+<div class="epoch"><h3>February 2026</h3><ul class="picked"><li>ANTLR</li><li>Drizzle ORM</li><li>Go</li><li>Less</li><li>Make</li><li>SCSS</li><li>Starlette</li></ul></div>
+<div class="epoch"><h3>January 2026</h3><ul class="picked"><li>CSS</li><li>Database migrations</li><li>Docker</li><li>Docker Compose</li><li>Expo</li><li>Express</li><li>FastAPI</li><li>Framer Motion</li><li>GSAP</li><li>GitHub Actions</li><li>HTML</li><li>JavaScript</li><li>LangChain</li><li>Mongoose</li><li>Next.js</li><li>OpenAI SDK</li><li>PLpgSQL</li><li>PostgreSQL</li><li>Prisma</li><li>Python</li><li>React</li><li>React Native</li><li>Recharts</li><li>Resend</li><li>Shell</li><li>Tailwind CSS</li><li>Transformers</li><li>TypeScript</li><li>Uvicorn</li><li>Vercel</li><li>Vite</li><li>Vitest</li><li>Zod</li><li>pytest</li></ul></div>
+</section>
 
+<section>
+  <h2>2026, month by month</h2>
+  <p class="lede">1,291 commits across 102 active days.</p>
+  <ul class="months"><li><span class="m">September 2026</span><span class="track"><i style="width:7.7%"></i></span><span class="n">67</span><span class="sub">4/4 days &middot; 37h</span></li>
+<li><span class="m">August 2026</span><span class="track"><i style="width:100.0%"></i></span><span class="n">868</span><span class="sub">24/31 days &middot; 89h</span></li>
+<li><span class="m">July 2026</span><span class="track"><i style="width:1.7%"></i></span><span class="n">15</span><span class="sub">10/31 days &middot; &ndash;</span></li>
+<li><span class="m">June 2026</span><span class="track"><i style="width:1.5%"></i></span><span class="n">2</span><span class="sub">2/30 days &middot; &ndash;</span></li>
+<li><span class="m">May 2026</span><span class="track"><i style="width:1.7%"></i></span><span class="n">15</span><span class="sub">7/31 days &middot; &ndash;</span></li>
+<li><span class="m">April 2026</span><span class="track"><i style="width:13.8%"></i></span><span class="n">120</span><span class="sub">12/30 days &middot; &ndash;</span></li>
+<li><span class="m">March 2026</span><span class="track"><i style="width:6.2%"></i></span><span class="n">54</span><span class="sub">13/31 days &middot; &ndash;</span></li>
+<li><span class="m">February 2026</span><span class="track"><i style="width:5.5%"></i></span><span class="n">48</span><span class="sub">10/28 days &middot; &ndash;</span></li>
+<li><span class="m">January 2026</span><span class="track"><i style="width:11.8%"></i></span><span class="n">102</span><span class="sub">20/31 days &middot; &ndash;</span></li></ul>
+</section>
 
-    </div>
+<footer class="colophon">
+  <p>247 days on record &middot; 126 hours tracked &middot;
+  1,291 commits &middot; 62 technologies &middot;
+  532 libraries.</p>
+  <p>Commit history comes from the GitHub API, which never expires, so gaps close
+  themselves. Focus time comes from WakaTime, whose free plan keeps 14 days; every
+  reading is stored permanently as it arrives. Days with no reading are drawn
+  hollow, never as zero.</p>
+  <p>Repository and project names are deliberately withheld. Generated
+  2026-09-04 03:10 UTC by
+  <a href="https://github.com/incmak">@incmak</a>.</p>
+</footer>
 
-    <script src="main.js"></script>
+</div>
 </body>
 </html>
