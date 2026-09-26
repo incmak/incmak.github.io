@@ -87,6 +87,8 @@ h2 {
   color: var(--ink);
 }
 .lede { margin: 0 0 26px; color: var(--faint); font-size: 13px; }
+.review-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.review-links a { color: var(--dim); text-underline-offset: 4px; }
 
 /* Records. Fixed columns so every row lines up regardless of content length. */
 .records { list-style: none; margin: 0; padding: 0; }
@@ -158,13 +160,13 @@ h2 {
 
 <div class="field-scroll"><svg xmlns="http://www.w3.org/2000/svg" width="840" height="387" viewBox="0 0 840 387" role="img" aria-label="Commits per day over the last year, with recent focus time">
 <rect width="840" height="387" fill="transparent"/>
-<text x="60.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">1,632</text>
+<text x="60.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">1,652</text>
 <text x="60.0" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">commits in 2026</text>
-<text x="245.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">32<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
+<text x="245.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">34<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
 <text x="245.5" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">current streak</text>
-<text x="431.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">32<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
+<text x="431.0" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">34<tspan dx="4" font-size="15" fill="var(--dim)">d</tspan></text>
 <text x="431.0" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">longest streak</text>
-<text x="616.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">368<tspan dx="4" font-size="15" fill="var(--dim)">h</tspan></text>
+<text x="616.5" y="54" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="30" font-weight="500" fill="var(--ink)" letter-spacing="0.4">394<tspan dx="4" font-size="15" fill="var(--dim)">h</tspan></text>
 <text x="616.5" y="73" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">tracked focus</text>
 <text x="60.0" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Dec</text>
 <text x="97.1" y="102" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" letter-spacing="0.4">Jan 2026</text>
@@ -455,41 +457,43 @@ h2 {
 <path d="M783.45 112.00H794.57L798.48 115.91V127.03H783.45Z" fill="var(--ramp-0)"><title>Mon 21 Sep 2026: 3 commits, 10.8h tracked</title></path>
 <path d="M783.45 130.55H794.57L798.48 134.46V145.58H783.45Z" fill="var(--ramp-2)"><title>Tue 22 Sep 2026: 28 commits, 13.9h tracked</title></path>
 <path d="M783.45 149.10H794.57L798.48 153.01V164.13H783.45Z" fill="var(--ramp-1)"><title>Wed 23 Sep 2026: 12 commits, 16.9h tracked</title></path>
-<path d="M783.45 167.65H794.57L798.48 171.56V182.68H783.45Z" fill="var(--ramp-0)"><title>Thu 24 Sep 2026: 4 commits, 17.7h tracked</title></path>
-<path d="M783.45 167.65H794.57L798.48 171.56V182.68H783.45Z" fill="none" stroke="var(--accent)" stroke-width="1.5" pointer-events="none"/>
+<path d="M783.45 167.65H794.57L798.48 171.56V182.68H783.45Z" fill="var(--ramp-0)"><title>Thu 24 Sep 2026: 5 commits, 18.1h tracked</title></path>
+<path d="M783.45 186.20H794.57L798.48 190.11V201.23H783.45Z" fill="var(--ramp-0)"><title>Fri 25 Sep 2026: 8 commits, 13.7h tracked</title></path>
+<path d="M783.45 204.75H794.57L798.48 208.66V219.78H783.45Z" fill="var(--ramp-1)"><title>Sat 26 Sep 2026: 11 commits, 12.5h tracked</title></path>
+<path d="M783.45 204.75H794.57L798.48 208.66V219.78H783.45Z" fill="none" stroke="var(--accent)" stroke-width="1.5" pointer-events="none"/>
 <text x="60" y="273.85" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" letter-spacing="0.3">focus time, daily</text>
-<text x="802" y="273.85" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" text-anchor="end">361.0h across 30 of 30 days</text>
-<path d="M60.00 327.15H75.80L78.80 330.15V335.85H60.00Z" fill="var(--focus)"/>
-<path d="M84.73 301.85H100.53L103.53 304.85V335.85H84.73Z" fill="var(--accent)"/>
-<text x="94.1" y="294.9" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="11" fill="var(--ink)" text-anchor="middle">19.1h</text>
-<path d="M109.47 311.88H125.26L128.26 314.88V335.85H109.47Z" fill="var(--focus)"/>
-<path d="M134.20 307.99H150.00L153.00 310.99V335.85H134.20Z" fill="var(--focus)"/>
-<path d="M158.93 310.33H174.73L177.73 313.33V335.85H158.93Z" fill="var(--focus)"/>
-<path d="M183.67 308.52H199.46L202.46 311.52V335.85H183.67Z" fill="var(--focus)"/>
-<path d="M208.40 315.91H224.20L227.20 318.91V335.85H208.40Z" fill="var(--focus)"/>
-<path d="M233.13 316.93H248.93L251.93 319.93V335.85H233.13Z" fill="var(--focus)"/>
-<path d="M257.87 313.33H273.66L276.66 316.33V335.85H257.87Z" fill="var(--focus)"/>
-<path d="M282.60 321.47H298.40L301.40 324.47V335.85H282.60Z" fill="var(--focus)"/>
-<path d="M307.33 313.30H323.13L326.13 316.30V335.85H307.33Z" fill="var(--focus)"/>
-<path d="M332.07 308.12H347.86L350.86 311.12V335.85H332.07Z" fill="var(--focus)"/>
-<path d="M356.80 311.15H372.60L375.60 314.15V335.85H356.80Z" fill="var(--focus)"/>
-<path d="M381.53 303.44H397.33L400.33 306.44V335.85H381.53Z" fill="var(--focus)"/>
-<path d="M406.27 312.74H422.06L425.06 315.74V335.85H406.27Z" fill="var(--focus)"/>
-<path d="M431.00 309.24H446.80L449.80 312.24V335.85H431.00Z" fill="var(--focus)"/>
-<path d="M455.73 308.84H471.53L474.53 311.84V335.85H455.73Z" fill="var(--focus)"/>
-<path d="M480.47 309.31H496.26L499.26 312.31V335.85H480.47Z" fill="var(--focus)"/>
-<path d="M505.20 320.02H521.00L524.00 323.02V335.85H505.20Z" fill="var(--focus)"/>
-<path d="M529.93 323.94H545.73L548.73 326.94V335.85H529.93Z" fill="var(--focus)"/>
-<path d="M554.67 313.45H570.46L573.46 316.45V335.85H554.67Z" fill="var(--focus)"/>
-<path d="M579.40 331.55H595.20L598.20 334.55V335.85H579.40Z" fill="var(--focus)"/>
-<path d="M604.13 332.12H619.93L622.93 335.12V335.85H604.13Z" fill="var(--focus)"/>
-<path d="M628.87 326.36H644.66L647.66 329.36V335.85H628.87Z" fill="var(--focus)"/>
-<path d="M653.60 312.89H669.40L672.40 315.89V335.85H653.60Z" fill="var(--focus)"/>
-<path d="M678.33 322.11H694.13L697.13 325.11V335.85H678.33Z" fill="var(--focus)"/>
-<path d="M703.07 316.64H718.86L721.86 319.64V335.85H703.07Z" fill="var(--focus)"/>
-<path d="M727.80 310.98H743.60L746.60 313.98V335.85H727.80Z" fill="var(--focus)"/>
-<path d="M752.53 305.74H768.33L771.33 308.74V335.85H752.53Z" fill="var(--focus)"/>
-<path d="M777.27 304.36H793.06L796.06 307.36V335.85H777.27Z" fill="var(--focus)"/>
+<text x="802" y="273.85" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="var(--dim)" text-anchor="end">363.7h across 30 of 30 days</text>
+<path d="M60.00 310.70H75.80L78.80 313.70V335.85H60.00Z" fill="var(--focus)"/>
+<path d="M84.73 306.62H100.53L103.53 309.62V335.85H84.73Z" fill="var(--focus)"/>
+<path d="M109.47 309.08H125.26L128.26 312.08V335.85H109.47Z" fill="var(--focus)"/>
+<path d="M134.20 307.18H150.00L153.00 310.18V335.85H134.20Z" fill="var(--focus)"/>
+<path d="M158.93 314.93H174.73L177.73 317.93V335.85H158.93Z" fill="var(--focus)"/>
+<path d="M183.67 316.00H199.46L202.46 319.00V335.85H183.67Z" fill="var(--focus)"/>
+<path d="M208.40 312.23H224.20L227.20 315.23V335.85H208.40Z" fill="var(--focus)"/>
+<path d="M233.13 320.76H248.93L251.93 323.76V335.85H233.13Z" fill="var(--focus)"/>
+<path d="M257.87 312.19H273.66L276.66 315.19V335.85H257.87Z" fill="var(--focus)"/>
+<path d="M282.60 306.76H298.40L301.40 309.76V335.85H282.60Z" fill="var(--focus)"/>
+<path d="M307.33 309.93H323.13L326.13 312.93V335.85H307.33Z" fill="var(--focus)"/>
+<path d="M332.07 301.85H347.86L350.86 304.85V335.85H332.07Z" fill="var(--accent)"/>
+<text x="341.5" y="294.9" font-family="ui-monospace, SFMono-Regular, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace" font-size="11" fill="var(--ink)" text-anchor="middle">18.2h</text>
+<path d="M356.80 311.60H372.60L375.60 314.60V335.85H356.80Z" fill="var(--focus)"/>
+<path d="M381.53 307.93H397.33L400.33 310.93V335.85H381.53Z" fill="var(--focus)"/>
+<path d="M406.27 307.51H422.06L425.06 310.51V335.85H406.27Z" fill="var(--focus)"/>
+<path d="M431.00 308.01H446.80L449.80 311.01V335.85H431.00Z" fill="var(--focus)"/>
+<path d="M455.73 319.24H471.53L474.53 322.24V335.85H455.73Z" fill="var(--focus)"/>
+<path d="M480.47 323.35H496.26L499.26 326.35V335.85H480.47Z" fill="var(--focus)"/>
+<path d="M505.20 312.35H521.00L524.00 315.35V335.85H505.20Z" fill="var(--focus)"/>
+<path d="M529.93 331.34H545.73L548.73 334.34V335.85H529.93Z" fill="var(--focus)"/>
+<path d="M554.67 331.94H570.46L573.46 334.94V335.85H554.67Z" fill="var(--focus)"/>
+<path d="M579.40 325.89H595.20L598.20 328.89V335.85H579.40Z" fill="var(--focus)"/>
+<path d="M604.13 311.76H619.93L622.93 314.76V335.85H604.13Z" fill="var(--focus)"/>
+<path d="M628.87 321.43H644.66L647.66 324.43V335.85H628.87Z" fill="var(--focus)"/>
+<path d="M653.60 315.69H669.40L672.40 318.69V335.85H653.60Z" fill="var(--focus)"/>
+<path d="M678.33 309.76H694.13L697.13 312.76V335.85H678.33Z" fill="var(--focus)"/>
+<path d="M703.07 304.26H718.86L721.86 307.26V335.85H703.07Z" fill="var(--focus)"/>
+<path d="M727.80 302.00H743.60L746.60 305.00V335.85H727.80Z" fill="var(--focus)"/>
+<path d="M752.53 310.14H768.33L771.33 313.14V335.85H752.53Z" fill="var(--focus)"/>
+<path d="M777.27 312.49H793.06L796.06 315.49V335.85H777.27Z" fill="var(--focus)"/>
 <text x="60" y="363.85" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10.5" fill="var(--dim)" dominant-baseline="central">quieter</text>
 <path d="M112.00 358.35H120.00L123.00 361.35V369.35H112.00Z" fill="var(--ramp-0)"/>
 <path d="M127.00 358.35H135.00L138.00 361.35V369.35H127.00Z" fill="var(--ramp-1)"/>
@@ -502,12 +506,25 @@ h2 {
 </svg></div>
 
 <section>
+  <h2>A week in review</h2>
+  <p class="lede">2026-09-14 to 2026-09-20</p>
+  <p>7 observed active days &middot; 49.6h.<br>
+  Focus readings cover 7 of 7 days.
+  Missing readings remain unknown.</p>
+  <p class="review-links"><a href="weekly.html">Weekly review</a>
+  <a href="monthly.html">Monthly retrospective</a>
+  <a href="yearly.html">Yearly retrospective</a></p>
+</section>
+
+
+
+<section>
   <h2>Best days on record</h2>
   <p class="lede">Ranked by tracked focus time. Kept permanently, so these
   survive WakaTime ageing the raw readings out of its window.</p>
   <ol class="records"><li><span class="rank">1</span><span class="when">Thu 27 Aug 2026</span><span class="hours">19.1<i>h</i></span><span class="commits">55 commits</span></li>
 <li><span class="rank">2</span><span class="when">Tue 8 Sep 2026</span><span class="hours">18.2<i>h</i></span><span class="commits">10 commits</span></li>
-<li><span class="rank">3</span><span class="when">Thu 24 Sep 2026</span><span class="hours">17.6<i>h</i></span><span class="commits">4 commits</span></li>
+<li><span class="rank">3</span><span class="when">Thu 24 Sep 2026</span><span class="hours">18.1<i>h</i></span><span class="commits">5 commits</span></li>
 <li><span class="rank">4</span><span class="when">Wed 23 Sep 2026</span><span class="hours">16.9<i>h</i></span><span class="commits">12 commits</span></li>
 <li><span class="rank">5</span><span class="when">Sat 29 Aug 2026</span><span class="hours">15.6<i>h</i></span><span class="commits">206 commits</span></li>
 <li><span class="rank">6</span><span class="when">Sun 6 Sep 2026</span><span class="hours">15.6<i>h</i></span><span class="commits">63 commits</span></li>
@@ -530,8 +547,8 @@ h2 {
 
 <section>
   <h2>2026, month by month</h2>
-  <p class="lede">1,632 commits across 122 active days.</p>
-  <ul class="months"><li><span class="m">September 2026</span><span class="track"><i style="width:46.5%"></i></span><span class="n">405</span><span class="sub">24/24 days &middot; 278h</span></li>
+  <p class="lede">1,652 commits across 124 active days.</p>
+  <ul class="months"><li><span class="m">September 2026</span><span class="track"><i style="width:48.8%"></i></span><span class="n">425</span><span class="sub">26/26 days &middot; 305h</span></li>
 <li><span class="m">August 2026</span><span class="track"><i style="width:100.0%"></i></span><span class="n">871</span><span class="sub">24/31 days &middot; 89h</span></li>
 <li><span class="m">July 2026</span><span class="track"><i style="width:1.7%"></i></span><span class="n">15</span><span class="sub">10/31 days &middot; &ndash;</span></li>
 <li><span class="m">June 2026</span><span class="track"><i style="width:1.5%"></i></span><span class="n">2</span><span class="sub">2/30 days &middot; &ndash;</span></li>
@@ -543,15 +560,15 @@ h2 {
 </section>
 
 <footer class="colophon">
-  <p>267 days on record &middot; 368 hours tracked &middot;
-  1,632 commits &middot; 65 technologies &middot;
+  <p>269 days on record &middot; 394 hours tracked &middot;
+  1,652 commits &middot; 65 technologies &middot;
   630 libraries.</p>
   <p>Commit history comes from the GitHub API, which never expires, so gaps close
   themselves. Focus time comes from WakaTime, whose free plan keeps 14 days; every
   reading is stored permanently as it arrives. Days with no reading are drawn
   hollow, never as zero.</p>
   <p>Repository and project names are deliberately withheld. Generated
-  2026-09-24 21:16 UTC by
+  2026-09-26 21:16 UTC by
   <a href="https://github.com/incmak">@incmak</a>.</p>
 </footer>
 

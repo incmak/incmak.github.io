@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monthly review · Working log</title><style>:root {
+  --bg: #17100f;
+  --ink: #f2e8e3;
+  --dim: #b3a099;
+  --faint: #958077;
+  --cell-empty: #241b19;
+  --cell-hollow: #3a2c28;
+  --accent: #f0a05c;
+  --focus: #c9764a;
+  --ramp-0: #3d2620;
+  --ramp-1: #6b3a2a;
+  --ramp-2: #9c5334;
+  --ramp-3: #cc7642;
+  --ramp-4: #f0a05c;
+}@media(prefers-color-scheme:light){:root {
+  --bg: #f6eeeb;
+  --ink: #241a16;
+  --dim: #665650;
+  --faint: #75625a;
+  --cell-empty: #e7dfda;
+  --cell-hollow: #cdbfb8;
+  --accent: #8f3f18;
+  --focus: #a1552d;
+  --ramp-0: #e6cdbd;
+  --ramp-1: #d4a184;
+  --ramp-2: #bc7854;
+  --ramp-3: #9d5330;
+  --ramp-4: #7a3517;
+}}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-synthesis-weight: none;
+}
+/* Grain sits on the substrate, never over the content. */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .045;
+}
+/* The field is the signature artifact, so the page aligns to IT rather than the
+   other way round: this inset equals the SVG's own left margin (60 of 840),
+   putting the masthead, headings and rows on the same axis as the stat columns. */
+.page {
+  position: relative; z-index: 1; max-width: 900px; margin: 0 auto;
+  padding: 72px 28px 96px; --inset: 7.143%;
+}
+.masthead, section, .colophon { padding-left: var(--inset); }
+
+.masthead { margin-bottom: 56px; }
+.masthead h1 {
+  margin: 0 0 10px; font-size: clamp(30px, 6vw, 46px); font-weight: 620;
+  letter-spacing: -.022em; line-height: 1.05;
+}
+.masthead p { margin: 0; max-width: 54ch; color: var(--dim); }
+
+/* The field is the signature artifact and leads the page. On a narrow screen it
+   scrolls rather than shrinking until the cells are unreadable. */
+.field-scroll { overflow-x: auto; margin: 0 -28px; padding: 0 28px; }
+.field-scroll svg { margin-left: 0; }
+.field-scroll svg { display: block; width: 100%; min-width: 700px; height: auto; }
+.field-scroll svg path[fill]:not([fill="none"]) { transition: opacity .12s ease; }
+.field-scroll svg:hover path[fill]:not([fill="none"]) { opacity: .55; }
+.field-scroll svg path:hover { opacity: 1 !important; }
+
+section { margin-top: 72px; }
+h2 {
+  margin: 0 0 5px; font-size: 16px; font-weight: 600; letter-spacing: -.006em;
+  color: var(--ink);
+}
+.lede { margin: 0 0 26px; color: var(--faint); font-size: 13px; }
+.review-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.review-links a { color: var(--dim); text-underline-offset: 4px; }
+
+/* Records. Fixed columns so every row lines up regardless of content length. */
+.records { list-style: none; margin: 0; padding: 0; }
+.records li {
+  display: grid; grid-template-columns: 28px 1fr auto 104px;
+  align-items: baseline; gap: 16px; padding: 11px 0;
+  border-top: 1px solid var(--hairline);
+}
+.records li:first-child { border-top: 0; }
+.rank { font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--faint); }
+.when { color: var(--ink); }
+.hours {
+  font: 500 21px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .01em; color: var(--accent);
+}
+.hours i { font-style: normal; font-size: 12px; color: var(--dim); margin-left: 3px; }
+.commits { text-align: right; color: var(--dim); font-size: 13px; }
+
+/* Picked up: typographic list, not a wall of tinted chips. */
+.epoch { display: grid; grid-template-columns: 150px 1fr; gap: 20px; padding: 16px 0; border-top: 1px solid var(--hairline); }
+.epoch:first-child { border-top: 0; }
+.epoch h3 { margin: 0; font-size: 14px; font-weight: 500; color: var(--dim); }
+.picked { list-style: none; display: flex; flex-wrap: wrap; margin: 0; padding: 0; gap: 0 14px; }
+.picked li { position: relative; }
+.picked li + li::before {
+  content: "\00b7"; position: absolute; left: -9px; color: var(--faint);
+}
+
+/* Months. The bar carries the same cut corner as a field cell. */
+.months { list-style: none; margin: 0; padding: 0; }
+.months li {
+  display: grid; grid-template-columns: 130px 1fr 64px; align-items: center;
+  gap: 14px; padding: 9px 0;
+}
+.months .m { color: var(--dim); font-size: 13px; }
+.months .track { height: 12px; background: var(--cell-empty); }
+.months .track i {
+  display: block; height: 100%; background: var(--focus);
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 0 100%);
+}
+.months .n { font: 500 14px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; }
+.months .sub { grid-column: 2 / -1; font-size: 12px; color: var(--faint); margin-top: -4px; }
+
+.colophon { margin-top: 80px; color: var(--faint); font-size: 12.5px; line-height: 1.7; }
+.colophon a { color: var(--dim); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.colophon a:hover { color: var(--ink); }
+
+@media (max-width: 620px) {
+  .page { padding: 48px 20px 72px; --inset: 0; }
+  .records li { grid-template-columns: 22px 1fr auto; }
+  .records .commits { grid-column: 2 / -1; text-align: left; margin-top: -6px; }
+  .epoch { grid-template-columns: 1fr; gap: 6px; }
+  .months li { grid-template-columns: 104px 1fr 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+article h1 {font-size:clamp(28px,5vw,42px);line-height:1.2;letter-spacing:-.025em;max-width:720px}
+article h2 {margin-top:40px} article p,article li {max-width:700px;color:var(--dim)}
+a {color:var(--dim);text-underline-offset:4px} li {margin-bottom:10px}
+</style></head><body><main class="page"><a href="index.html">← Working log</a>
+<article><h1>Monthly review · 2026-09-01 to 2026-09-25</h1><p>25 observed active days · 414 commits · 292.54h tracked focus time.</p><p>Coverage: focus readings on 25/25 days; commit readings on 25/25 days.</p><p>This period is still in progress; today is excluded.</p><p>Focus comparison withheld: both periods need complete, equal-length coverage.</p><h2>First contact</h2><ul><li>pandas</li><li>SQLite</li><li>C</li><li>Anthropic SDK</li></ul><h2>Technologies revisited</h2><p>Tracked language use or repository observations during this period; not a measure of proficiency.</p><ul><li>TypeScript</li><li>Swift</li><li>Python</li><li>Prisma</li><li>Kotlin</li><li>JavaScript</li><li>HTML</li><li>Go</li><li>Docker</li><li>CSS</li></ul><h2>Milestones</h2><p>No milestones selected.</p></article><p><a href="monthly.md" download>Download Markdown</a></p>
+</main></body></html>
