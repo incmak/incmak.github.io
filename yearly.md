@@ -1,8 +1,8 @@
-# Yearly review · 2026-01-01 to 2026-09-27
+# Yearly review · 2026-01-01 to 2026-09-28
 
-125 observed active days · 1725 commits · 411.97h tracked focus time.
+126 observed active days · 1729 commits · 418.39h tracked focus time.
 
-Coverage: focus readings on 37/270 days; commit readings on 270/270 days.
+Coverage: focus readings on 38/271 days; commit readings on 271/271 days.
 
 This period is still in progress; today is excluded.
 
@@ -19,7 +19,6 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Vite
 - Vercel
 - Uvicorn
-- TypeScript
 - Three.js
 - Tailwind CSS
 - Swift Package Manager
@@ -62,6 +61,7 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - CSS
 - C
 - Anthropic SDK
+- TypeScript
 - React Three Fiber
 - esbuild
 - Stripe

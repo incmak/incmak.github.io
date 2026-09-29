@@ -23,7 +23,6 @@ Tracked language use or repository observations during this period; not a measur
 - Vite
 - Vercel
 - Uvicorn
-- TypeScript
 - Three.js
 - Tailwind CSS
 - Swift Package Manager
@@ -66,6 +65,7 @@ Tracked language use or repository observations during this period; not a measur
 - CSS
 - C
 - Anthropic SDK
+- TypeScript
 
 ## Milestones
 
