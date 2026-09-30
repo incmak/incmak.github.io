@@ -1,6 +1,6 @@
 # Monthly review · 2026-09-01 to 2026-09-29
 
-29 observed active days · 504 commits · 331.78h tracked focus time.
+29 observed active days · 505 commits · 331.96h tracked focus time.
 
 Coverage: focus readings on 29/29 days; commit readings on 29/29 days.
 
@@ -27,6 +27,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vite
 - Vercel
 - Uvicorn
+- TypeScript
 - Three.js
 - Tailwind CSS
 - Swift Package Manager
@@ -66,7 +67,6 @@ Tracked language use or repository observations during this period; not a measur
 - Docker
 - Database migrations
 - CSS
-- TypeScript
 
 ## Milestones
 
