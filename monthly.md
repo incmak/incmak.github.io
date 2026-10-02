@@ -1,17 +1,16 @@
-# Monthly review · 2026-09-01 to 2026-09-30
+# Monthly review · 2026-10-01 to 2026-10-01
 
-30 observed active days · 511 commits · 340.22h tracked focus time.
+1 observed active days · 20 commits · 23.48h tracked focus time.
 
-Coverage: focus readings on 30/30 days; commit readings on 30/30 days.
+Coverage: focus readings on 1/1 days; commit readings on 1/1 days.
 
-Focus comparison withheld: both periods need complete, equal-length coverage.
+This period is still in progress; today is excluded.
+
+Tracked focus changed by +12.3h versus the previous period.
 
 ## First contact
 
-- pandas
-- SQLite
-- C
-- Anthropic SDK
+No new technology first contacts in this period.
 
 ## Technologies revisited
 
@@ -19,6 +18,7 @@ Tracked language use or repository observations during this period; not a measur
 
 - pytest
 - pre-commit
+- pandas
 - Zod
 - Vue
 - Vitest
@@ -31,6 +31,7 @@ Tracked language use or repository observations during this period; not a measur
 - Swift Package Manager
 - Swift
 - Shell
+- SQLite
 - SQLAlchemy
 - SCSS
 - Ruby
@@ -65,6 +66,8 @@ Tracked language use or repository observations during this period; not a measur
 - Docker
 - Database migrations
 - CSS
+- C
+- Anthropic SDK
 
 ## Milestones
 
