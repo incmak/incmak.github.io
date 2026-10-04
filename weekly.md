@@ -24,7 +24,6 @@ Tracked language use or repository observations during this period; not a measur
 - Vercel
 - Uvicorn
 - TypeScript
-- Three.js
 - Tailwind CSS
 - Swift Package Manager
 - Swift
@@ -53,8 +52,6 @@ Tracked language use or repository observations during this period; not a measur
 - HTML
 - Go
 - GitHub Actions
-- GSAP
-- GLSL
 - Firebase
 - FastAPI
 - Express
@@ -66,6 +63,9 @@ Tracked language use or repository observations during this period; not a measur
 - CSS
 - C
 - Anthropic SDK
+- Three.js
+- GSAP
+- GLSL
 
 ## Milestones
 

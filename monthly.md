@@ -1,16 +1,16 @@
-# Monthly review · 2026-10-01 to 2026-10-02
+# Monthly review · 2026-10-01 to 2026-10-03
 
-2 observed active days · 30 commits · 40.61h tracked focus time.
+3 observed active days · 55 commits · 62.56h tracked focus time.
 
-Coverage: focus readings on 2/2 days; commit readings on 2/2 days.
+Coverage: focus readings on 3/3 days; commit readings on 3/3 days.
 
 This period is still in progress; today is excluded.
 
-Tracked focus changed by +18.82h versus the previous period.
+Tracked focus changed by +28.15h versus the previous period.
 
 ## First contact
 
-No new technology first contacts in this period.
+- Helm
 
 ## Technologies revisited
 
@@ -26,7 +26,6 @@ Tracked language use or repository observations during this period; not a measur
 - Vercel
 - Uvicorn
 - TypeScript
-- Three.js
 - Tailwind CSS
 - Swift Package Manager
 - Swift
@@ -55,8 +54,6 @@ Tracked language use or repository observations during this period; not a measur
 - HTML
 - Go
 - GitHub Actions
-- GSAP
-- GLSL
 - Firebase
 - FastAPI
 - Express
@@ -68,6 +65,9 @@ Tracked language use or repository observations during this period; not a measur
 - CSS
 - C
 - Anthropic SDK
+- Three.js
+- GSAP
+- GLSL
 
 ## Milestones
 
