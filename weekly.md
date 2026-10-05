@@ -1,14 +1,14 @@
-# Weekly review · 2026-09-21 to 2026-09-27
+# Weekly review · 2026-09-28 to 2026-10-04
 
-7 observed active days · 90 commits · 103.6h tracked focus time.
+7 observed active days · 88 commits · 104.07h tracked focus time.
 
 Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
 
-Tracked focus changed by +53.96h versus the previous period.
+Tracked focus changed by +0.47h versus the previous period.
 
 ## First contact
 
-No new technology first contacts in this period.
+- Helm
 
 ## Technologies revisited
 
