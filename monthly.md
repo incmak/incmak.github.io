@@ -1,12 +1,12 @@
-# Monthly review · 2026-10-01 to 2026-10-07
+# Monthly review · 2026-10-01 to 2026-10-08
 
-7 observed active days · 189 commits · 129.53h tracked focus time.
+8 observed active days · 218 commits · 141.69h tracked focus time.
 
-Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
+Coverage: focus readings on 8/8 days; commit readings on 8/8 days.
 
 This period is still in progress; today is excluded.
 
-Tracked focus changed by +45.01h versus the previous period.
+Tracked focus changed by +39h versus the previous period.
 
 ## First contact
 
