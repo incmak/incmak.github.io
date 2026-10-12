@@ -1,14 +1,14 @@
-# Weekly review · 2026-09-28 to 2026-10-04
+# Weekly review · 2026-10-05 to 2026-10-11
 
-7 observed active days · 91 commits · 104.07h tracked focus time.
+7 observed active days · 250 commits · 98.65h tracked focus time.
 
 Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
 
-Tracked focus changed by +0.47h versus the previous period.
+Tracked focus changed by -5.42h versus the previous period.
 
 ## First contact
 
-- Helm
+No new technology first contacts in this period.
 
 ## Technologies revisited
 
@@ -25,14 +25,10 @@ Tracked language use or repository observations during this period; not a measur
 - Uvicorn
 - TypeScript
 - Tailwind CSS
-- Swift Package Manager
-- Swift
 - Shell
 - SQLite
 - SQLAlchemy
 - SCSS
-- Ruby
-- Room
 - Resend
 - Redis
 - Recharts
@@ -45,12 +41,9 @@ Tracked language use or repository observations during this period; not a measur
 - PLpgSQL
 - Next.js
 - Make
-- Kotlin
-- Jest
 - JavaScript
-- Java
+- Helm
 - HTML
-- Go
 - GitHub Actions
 - GSAP
 - Firebase
@@ -62,10 +55,16 @@ Tracked language use or repository observations during this period; not a measur
 - Docker
 - Database migrations
 - CSS
-- C
 - Anthropic SDK
-- Three.js
-- GLSL
+- Swift Package Manager
+- Swift
+- Ruby
+- Room
+- Kotlin
+- Jest
+- Java
+- Go
+- C
 
 ## Milestones
 
