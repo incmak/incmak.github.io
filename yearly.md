@@ -1,6 +1,6 @@
 # Yearly review · 2026-01-01 to 2026-10-12
 
-140 observed active days · 2068 commits · 623.49h tracked focus time.
+140 observed active days · 2069 commits · 633.27h tracked focus time.
 
 Coverage: focus readings on 52/285 days; commit readings on 285/285 days.
 
@@ -19,7 +19,9 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Vite
 - Vercel
 - Uvicorn
+- TypeScript
 - Tailwind CSS
+- Swift
 - Shell
 - SQLite
 - SQLAlchemy
@@ -51,9 +53,7 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Database migrations
 - CSS
 - Anthropic SDK
-- TypeScript
 - Swift Package Manager
-- Swift
 - Ruby
 - Room
 - Kotlin
