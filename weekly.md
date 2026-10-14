@@ -1,6 +1,6 @@
 # Weekly review · 2026-10-05 to 2026-10-11
 
-7 observed active days · 250 commits · 98.65h tracked focus time.
+7 observed active days · 253 commits · 98.65h tracked focus time.
 
 Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
 
@@ -23,6 +23,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vite
 - Vercel
 - Uvicorn
+- TypeScript
 - Tailwind CSS
 - Shell
 - SQLite
@@ -55,7 +56,6 @@ Tracked language use or repository observations during this period; not a measur
 - Database migrations
 - CSS
 - Anthropic SDK
-- TypeScript
 - Swift
 - Swift Package Manager
 - Ruby
