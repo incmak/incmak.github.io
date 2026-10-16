@@ -23,6 +23,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vite
 - Vercel
 - Uvicorn
+- TypeScript
 - Tailwind CSS
 - Shell
 - SQLite
@@ -55,7 +56,6 @@ Tracked language use or repository observations during this period; not a measur
 - Database migrations
 - CSS
 - Anthropic SDK
-- TypeScript
 - Swift
 - Swift Package Manager
 - Ruby
