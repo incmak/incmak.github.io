@@ -1,10 +1,10 @@
-# Weekly review · 2026-10-05 to 2026-10-11
+# Weekly review · 2026-10-12 to 2026-10-18
 
-7 observed active days · 254 commits · 98.65h tracked focus time.
+7 observed active days · 175 commits · 97.61h tracked focus time.
 
 Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
 
-Tracked focus changed by -5.42h versus the previous period.
+Tracked focus changed by -1.04h versus the previous period.
 
 ## First contact
 
@@ -21,10 +21,10 @@ Tracked language use or repository observations during this period; not a measur
 - Vue
 - Vitest
 - Vite
-- Vercel
 - Uvicorn
-- TypeScript
+- Transformers
 - Tailwind CSS
+- Starlette
 - Shell
 - SQLite
 - SQLAlchemy
@@ -32,15 +32,16 @@ Tracked language use or repository observations during this period; not a measur
 - Resend
 - Redis
 - Recharts
-- React Native
 - React
 - Python
 - Prisma
 - PostgreSQL
 - Playwright
 - PLpgSQL
+- OpenAI SDK
 - Next.js
 - Make
+- LangChain
 - JavaScript
 - Helm
 - HTML
@@ -49,22 +50,17 @@ Tracked language use or repository observations during this period; not a measur
 - Firebase
 - FastAPI
 - Express
-- Expo
-- Drizzle ORM
 - Docker Compose
 - Docker
 - Database migrations
 - CSS
 - Anthropic SDK
+- Vercel
+- TypeScript
+- React Native
+- Expo
+- Drizzle ORM
 - Swift
-- Swift Package Manager
-- Ruby
-- Room
-- Kotlin
-- Jest
-- Java
-- Go
-- C
 
 ## Milestones
 
