@@ -1,10 +1,10 @@
 # Weekly review · 2026-10-12 to 2026-10-18
 
-7 observed active days · 175 commits · 97.61h tracked focus time.
+7 observed active days · 175 commits · 109.53h tracked focus time.
 
 Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
 
-Tracked focus changed by -1.04h versus the previous period.
+Tracked focus changed by +10.88h versus the previous period.
 
 ## First contact
 
@@ -22,6 +22,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vitest
 - Vite
 - Uvicorn
+- TypeScript
 - Transformers
 - Tailwind CSS
 - Starlette
@@ -56,7 +57,6 @@ Tracked language use or repository observations during this period; not a measur
 - CSS
 - Anthropic SDK
 - Vercel
-- TypeScript
 - React Native
 - Expo
 - Drizzle ORM
