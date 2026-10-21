@@ -22,7 +22,6 @@ Tracked language use or repository observations during this period; not a measur
 - Vitest
 - Vite
 - Uvicorn
-- TypeScript
 - Transformers
 - Tailwind CSS
 - Starlette
@@ -56,6 +55,7 @@ Tracked language use or repository observations during this period; not a measur
 - Database migrations
 - CSS
 - Anthropic SDK
+- TypeScript
 - Vercel
 - React Native
 - Expo
