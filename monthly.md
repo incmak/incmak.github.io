@@ -1,12 +1,12 @@
-# Monthly review · 2026-10-01 to 2026-10-22
+# Monthly review · 2026-10-01 to 2026-10-23
 
-22 observed active days · 672 commits · 336.9h tracked focus time.
+23 observed active days · 688 commits · 347.48h tracked focus time.
 
-Coverage: focus readings on 22/22 days; commit readings on 22/22 days.
+Coverage: focus readings on 23/23 days; commit readings on 23/23 days.
 
 This period is still in progress; today is excluded.
 
-Tracked focus changed by +93.07h versus the previous period.
+Tracked focus changed by +86.77h versus the previous period.
 
 ## First contact
 
@@ -24,6 +24,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vitest
 - Vite
 - Uvicorn
+- TypeScript
 - Transformers
 - Tailwind CSS
 - Starlette
@@ -56,7 +57,6 @@ Tracked language use or repository observations during this period; not a measur
 - Database migrations
 - CSS
 - Anthropic SDK
-- TypeScript
 - Vercel
 - React Native
 - Expo
