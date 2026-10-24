@@ -17,6 +17,7 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Vue
 - Vitest
 - Vite
+- Vercel
 - Uvicorn
 - TypeScript
 - Transformers
@@ -29,6 +30,7 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Resend
 - Redis
 - Recharts
+- React Native
 - React
 - Python
 - Prisma
@@ -47,15 +49,13 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Firebase
 - FastAPI
 - Express
+- Expo
+- Drizzle ORM
 - Docker Compose
 - Docker
 - Database migrations
 - CSS
 - Anthropic SDK
-- Vercel
-- React Native
-- Expo
-- Drizzle ORM
 - Swift
 - Swift Package Manager
 - Ruby

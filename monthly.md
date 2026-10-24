@@ -23,6 +23,7 @@ Tracked language use or repository observations during this period; not a measur
 - Vue
 - Vitest
 - Vite
+- Vercel
 - Uvicorn
 - TypeScript
 - Transformers
@@ -35,6 +36,7 @@ Tracked language use or repository observations during this period; not a measur
 - Resend
 - Redis
 - Recharts
+- React Native
 - React
 - Python
 - Prisma
@@ -52,15 +54,13 @@ Tracked language use or repository observations during this period; not a measur
 - Firebase
 - FastAPI
 - Express
+- Expo
+- Drizzle ORM
 - Docker Compose
 - Docker
 - Database migrations
 - CSS
 - Anthropic SDK
-- Vercel
-- React Native
-- Expo
-- Drizzle ORM
 - Swift
 - Swift Package Manager
 - Ruby
