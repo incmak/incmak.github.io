@@ -1,14 +1,16 @@
-# Monthly review · 2026-10-01 to 2026-10-31
+# Monthly review · 2026-11-01 to 2026-11-01
 
-31 observed active days · 874 commits · 423.67h tracked focus time.
+1 observed active days · 6 commits · 0h tracked focus time.
 
-Coverage: focus readings on 31/31 days; commit readings on 31/31 days.
+Coverage: focus readings on 1/1 days; commit readings on 1/1 days.
 
-Focus comparison withheld: both periods need complete, equal-length coverage.
+This period is still in progress; today is excluded.
+
+Tracked focus changed by -23.48h versus the previous period.
 
 ## First contact
 
-- Helm
+No new technology first contacts in this period.
 
 ## Technologies revisited
 
@@ -45,6 +47,7 @@ Tracked language use or repository observations during this period; not a measur
 - Make
 - LangChain
 - JavaScript
+- Helm
 - HTML
 - GitHub Actions
 - GSAP
@@ -58,18 +61,6 @@ Tracked language use or repository observations during this period; not a measur
 - Database migrations
 - CSS
 - Anthropic SDK
-- TypeScript
-- Swift
-- Swift Package Manager
-- Ruby
-- Room
-- Kotlin
-- Jest
-- Java
-- Go
-- C
-- Three.js
-- GLSL
 
 ## Milestones
 
