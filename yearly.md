@@ -1,6 +1,6 @@
 # Yearly review · 2026-01-01 to 2026-11-07
 
-166 observed active days · 2892 commits · 853.14h tracked focus time.
+166 observed active days · 2895 commits · 853.14h tracked focus time.
 
 Coverage: focus readings on 72/311 days; commit readings on 311/311 days.
 
@@ -21,6 +21,8 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Uvicorn
 - Transformers
 - Tailwind CSS
+- Swift Package Manager
+- Swift
 - Starlette
 - Shell
 - SQLite
@@ -54,17 +56,15 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Docker
 - Database migrations
 - CSS
+- C
 - Anthropic SDK
 - TypeScript
-- Swift
-- Swift Package Manager
 - Ruby
 - Room
 - Kotlin
 - Jest
 - Java
 - Go
-- C
 - Three.js
 - GLSL
 - React Three Fiber
