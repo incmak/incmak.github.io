@@ -1,8 +1,8 @@
-# Monthly review · 2026-11-01 to 2026-11-07
+# Monthly review · 2026-11-01 to 2026-11-08
 
-7 observed active days · 280 commits · 0h tracked focus time.
+8 observed active days · 339 commits · 0h tracked focus time.
 
-Coverage: focus readings on 1/7 days; commit readings on 7/7 days.
+Coverage: focus readings on 1/8 days; commit readings on 8/8 days.
 
 This period is still in progress; today is excluded.
 
@@ -27,6 +27,8 @@ Tracked language use or repository observations during this period; not a measur
 - Uvicorn
 - Transformers
 - Tailwind CSS
+- Swift Package Manager
+- Swift
 - Starlette
 - Shell
 - SQLite
@@ -60,6 +62,7 @@ Tracked language use or repository observations during this period; not a measur
 - Docker
 - Database migrations
 - CSS
+- C
 - Anthropic SDK
 
 ## Milestones

@@ -1,10 +1,10 @@
-# Weekly review · 2026-10-26 to 2026-11-01
+# Weekly review · 2026-11-02 to 2026-11-08
 
-7 observed active days · 29 commits · 48.98h tracked focus time.
+7 observed active days · 333 commits · unknown tracked focus time.
 
-Coverage: focus readings on 7/7 days; commit readings on 7/7 days.
+Coverage: focus readings on 0/7 days; commit readings on 7/7 days.
 
-Tracked focus changed by -30.97h versus the previous period.
+Focus comparison withheld: both periods need complete, equal-length coverage.
 
 ## First contact
 
@@ -25,6 +25,8 @@ Tracked language use or repository observations during this period; not a measur
 - Uvicorn
 - Transformers
 - Tailwind CSS
+- Swift Package Manager
+- Swift
 - Starlette
 - Shell
 - SQLite
@@ -58,8 +60,8 @@ Tracked language use or repository observations during this period; not a measur
 - Docker
 - Database migrations
 - CSS
+- C
 - Anthropic SDK
-- TypeScript
 
 ## Milestones
 
