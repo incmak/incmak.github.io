@@ -1,8 +1,8 @@
-# Monthly review · 2026-11-01 to 2026-11-15
+# Monthly review · 2026-11-01 to 2026-11-16
 
-15 observed active days · 736 commits · 2.53h tracked focus time.
+16 observed active days · 766 commits · 8.25h tracked focus time.
 
-Coverage: focus readings on 2/15 days; commit readings on 15/15 days.
+Coverage: focus readings on 3/16 days; commit readings on 16/16 days.
 
 This period is still in progress; today is excluded.
 
@@ -25,7 +25,6 @@ Tracked language use or repository observations during this period; not a measur
 - Vite
 - Vercel
 - Uvicorn
-- Transformers
 - Tailwind CSS
 - Swift Package Manager
 - Swift
@@ -44,10 +43,8 @@ Tracked language use or repository observations during this period; not a measur
 - PostgreSQL
 - Playwright
 - PLpgSQL
-- OpenAI SDK
 - Next.js
 - Make
-- LangChain
 - JavaScript
 - Helm
 - HTML
@@ -64,6 +61,9 @@ Tracked language use or repository observations during this period; not a measur
 - CSS
 - C
 - Anthropic SDK
+- Transformers
+- OpenAI SDK
+- LangChain
 
 ## Milestones
 
