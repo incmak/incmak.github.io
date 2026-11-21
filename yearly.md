@@ -1,6 +1,6 @@
 # Yearly review · 2026-01-01 to 2026-11-20
 
-179 observed active days · 3724 commits · 885.36h tracked focus time.
+179 observed active days · 3633 commits · 885.36h tracked focus time.
 
 Coverage: focus readings on 78/324 days; commit readings on 324/324 days.
 
