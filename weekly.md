@@ -1,6 +1,6 @@
 # Weekly review · 2026-11-09 to 2026-11-15
 
-7 observed active days · 394 commits · 2.53h tracked focus time.
+7 observed active days · 370 commits · 2.53h tracked focus time.
 
 Coverage: focus readings on 1/7 days; commit readings on 7/7 days.
 
