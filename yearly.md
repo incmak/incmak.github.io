@@ -1,8 +1,8 @@
-# Yearly review · 2026-01-01 to 2026-11-22
+# Yearly review · 2026-01-01 to 2026-11-23
 
-181 observed active days · 3801 commits · 891.29h tracked focus time.
+182 observed active days · 3792 commits · 891.76h tracked focus time.
 
-Coverage: focus readings on 80/326 days; commit readings on 326/326 days.
+Coverage: focus readings on 81/327 days; commit readings on 327/327 days.
 
 This period is still in progress; today is excluded.
 
@@ -17,7 +17,6 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Vue
 - Vitest
 - Vite
-- Vercel
 - Uvicorn
 - Tailwind CSS
 - Swift Package Manager
@@ -30,7 +29,6 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Resend
 - Redis
 - Recharts
-- React Native
 - React
 - Python
 - Prisma
@@ -47,14 +45,16 @@ Focus comparison withheld: both periods need complete, equal-length coverage.
 - Firebase
 - FastAPI
 - Express
-- Expo
-- Drizzle ORM
 - Docker Compose
 - Docker
 - Database migrations
 - CSS
 - C
 - Anthropic SDK
+- Vercel
+- React Native
+- Expo
+- Drizzle ORM
 - Transformers
 - OpenAI SDK
 - LangChain
